@@ -22,6 +22,7 @@ import qbix.sm.client.services.SessionServiceAsync;
 public class MainController implements  ValueChangeHandler<String>, Presenter{
     
     //injected
+    //yes, it is injected
     private EventBus eventBus;
 
     private HasWidgets container;
