@@ -67,11 +67,11 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
         }
     }
 
-    private static class SessionChecker {
+    public static class SessionChecker {
         static private SessionServiceAsync sessionService=GWT.create(SessionService.class);
-        static boolean auth=false;
-        static User userInSession=null;
-        static boolean isAuthenticated(){
+        static private boolean auth=false;
+        static private User userInSession=null;
+        public static boolean isAuthenticated(){
             sessionService.isAuthenticated(new AsyncCallback<Boolean>() {
                 public void onFailure(Throwable caught) {}
                 public void onSuccess(Boolean result) {
@@ -80,7 +80,7 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
             });
             return auth;
         }
-        static User getUserFromSesion(){
+        public static User getUserFromSesion(){
             sessionService.getUserFromSession(new AsyncCallback<User>() {
                 public void onFailure(Throwable caught) { }
                 public void onSuccess(User result) {
