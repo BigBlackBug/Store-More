@@ -56,7 +56,7 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
         if ("".equals(History.getToken())) 
           ;//start presenter
         else 
-          History.fireCurrentHistoryState();   
+          History.fireCurrentHistoryState();
     }
 
 
@@ -80,10 +80,10 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
     }
 
     public static class SessionChecker {
-        static private SessionServiceAsync sessionService=GWT.create(SessionService.class);
-        static private boolean auth=false;
-        static private User userInSession=null;
-        public static boolean isAuthenticated(){
+         private static SessionServiceAsync sessionService=GWT.create(SessionService.class);
+         private static boolean auth=false;
+         private static User userInSession=null;
+         public static boolean isAuthenticated(){
             sessionService.isAuthenticated(new AsyncCallback<Boolean>() {
                 public void onFailure(Throwable caught) {}
                 public void onSuccess(Boolean result) {
@@ -100,6 +100,12 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
                 }
             });
             return userInSession;
+        }
+        public static void addUserToSession(User user){
+            sessionService.addUserToSession(user, new AsyncCallback<Void>() {
+                public void onFailure(Throwable caught) {}
+                public void onSuccess(Void result) {}
+            });
         }
     }
 }
