@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class SmCategory implements IsSerializable{
 
-    private Long id;
+    private Long categoryId;
 
     private Long parentId;
 
@@ -30,7 +30,7 @@ public class SmCategory implements IsSerializable{
     }
 
     public SmCategory(Long id, Long parentId, String name, String password, String description, LinkedList<SmFile> files, HashSet<SmCategory> childs) {
-        this.id = id;
+        this.categoryId = id;
         this.parentId = parentId;
         this.name = name;
         this.password = password;
@@ -39,12 +39,12 @@ public class SmCategory implements IsSerializable{
         this.children = childs;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCategoryId(Long id) {
+        this.categoryId = id;
     }
 
     public Long getParentId() {
@@ -111,7 +111,7 @@ public class SmCategory implements IsSerializable{
             return true;
         if(obj instanceof SmCategory){
             SmCategory objCat=(SmCategory)obj;
-            if(objCat.getId().equals(id))
+            if(objCat.getCategoryId().equals(categoryId))
                 return true;
         }
         return false;
@@ -120,7 +120,7 @@ public class SmCategory implements IsSerializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 53 * hash + (this.categoryId != null ? this.categoryId.hashCode() : 0);
         hash = 53 * hash + (this.name != null ? this.name.hashCode() : 0);
         hash = 53 * hash + (this.password != null ? this.password.hashCode() : 0);
         return hash;
@@ -128,6 +128,6 @@ public class SmCategory implements IsSerializable{
 
     @Override
     public String toString() {
-        return id+", "+name+", parentId:"+parentId+"subCategories:"+children.toString()+",  files:"+files.toString();
+        return categoryId+", "+name+", parentId:"+parentId+"subCategories:"+children.toString()+",  files:"+files.toString();
     }
 }

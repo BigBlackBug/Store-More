@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 //потом добавим аннотации хибера
 public class User implements IsSerializable {
 
-   private Long id;
+   private Long userId;
 
    private String name;
 
@@ -24,7 +24,7 @@ public class User implements IsSerializable {
     }
 
     public User(Long id, String name, String email, String password, String path) {
-        this.id = id;
+        this.userId = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -39,12 +39,12 @@ public class User implements IsSerializable {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long id) {
+        this.userId = id;
     }
 
     public String getPassword() {
@@ -78,7 +78,7 @@ public class User implements IsSerializable {
             return true;
         if(obj instanceof User){
             User objUser=(User)obj;
-            if(objUser.getId().equals(id)==true)
+            if(objUser.getUserId().equals(userId)==true)
                 return true;
             if(objUser.getName().equals(name) && objUser.getPassword().equals(password)==true)
                 return true;
@@ -89,7 +89,7 @@ public class User implements IsSerializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 97 * hash + (this.userId != null ? this.userId.hashCode() : 0);
         hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
         hash = 97 * hash + (this.password != null ? this.password.hashCode() : 0);
         return hash;
@@ -97,7 +97,7 @@ public class User implements IsSerializable {
 
     @Override
     public String toString() {
-        return id+" "+name;
+        return userId+" "+name;
     }
 
 }

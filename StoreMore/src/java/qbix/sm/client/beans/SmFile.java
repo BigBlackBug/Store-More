@@ -9,7 +9,7 @@ import java.util.Date;
  * @author iliax
  */
 public class SmFile implements  IsSerializable{
-    private Long id;
+    private Long fileId;
 
     private Long catId;
 
@@ -29,7 +29,7 @@ public class SmFile implements  IsSerializable{
     }
 
     public SmFile(Long id, Long catId, String realName, String pathName, Long size, Date uploadDate) {
-        this.id = id;
+        this.fileId = id;
         this.catId = catId;
         this.realName = realName;
         this.pathName = pathName;
@@ -37,12 +37,12 @@ public class SmFile implements  IsSerializable{
         this.uploadDate = uploadDate;
     }
 
-    public Long getId() {
-        return id;
+    public Long getFileId() {
+        return fileId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setFileId(Long id) {
+        this.fileId = id;
     }
 
     public Long getCatId() {
@@ -87,7 +87,7 @@ public class SmFile implements  IsSerializable{
 
     @Override
     public String toString() {
-        return id+" "+realName+" categId:"+catId;
+        return fileId+" "+realName+" categId:"+catId;
     }
 
 
