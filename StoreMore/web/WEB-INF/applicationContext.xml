@@ -17,5 +17,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <aop:aspectj-autoproxy/>
 <!-- /PREFERENSES -->
 
+<!-- DAOs -->
+<!--
+    <bean name="userDao" class="qbix.sm.server.dao.UserDaoMock"/>
+
+    <bean name="fileDao" class="qbix.sm.server.dao.FileDaoMock"/>
+
+    <bean name="categoryDao" class="qbix.sm.server.dao.UserDaoMock"/>
+-->
+<!-- /DAOs -->
 
 </beans>

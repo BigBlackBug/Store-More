@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import org.apache.http.auth.AUTH;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
+import qbix.sm.client.events.ShowAccoutPageEvent;
 import qbix.sm.client.presenters.Presenter;
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;
@@ -23,19 +24,29 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
     
     //injected
     private EventBus eventBus;
-
+    //private UserServiceAsync userService
     private HasWidgets container;
 
+    //для запоминания предыдущего состояния истории
+    String tempHistoryItem;
+
     @Inject  
-    public MainController(EventBus eventBus) {
+    public MainController(EventBus eventBus /*, UserServiceAsync userService*/) {
         this.eventBus = eventBus;
+        //this.userService=userService
         bind();
     }
 
     private void bind(){
         History.addValueChangeHandler(this);
 
-        //привязываем все ивенты here
+        //привязываем все ивенты здесь:
+        
+        eventBus.addHandler(ShowAccoutPageEvent.TYPE, new ShowAccoutPageEvent.Event_Handler() {
+            public void onShowAccountPageEvent(ShowAccoutPageEvent showAccoutPageEvent) {
+                //
+            }
+        });
     }
 
     public void go(final HasWidgets container) {
@@ -55,7 +66,7 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
             Presenter presenter = null;
             
             if(SessionChecker.isAuthenticated()){
-                //switch
+                
             }
             else{
                 //switch
