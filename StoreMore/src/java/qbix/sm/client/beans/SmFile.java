@@ -10,7 +10,6 @@ import java.util.Date;
  */
 public class SmFile implements  IsSerializable{
 
-
     private Long fileId;
 
     private SmCategory category;
@@ -82,19 +81,11 @@ public class SmFile implements  IsSerializable{
         return fileId+" "+realName+" categId:"+getCategory().getCategoryId();
     }
 
-    /**
-     * @return the category
-     */
-    public SmCategory getCategory()
-    {
+    public SmCategory getCategory(){
         return category;
     }
 
-    /**
-     * @param category the category to set
-     */
-    public void setCategory(SmCategory category)
-    {
+    public void setCategory(SmCategory category){
         this.category = category;
     }
 

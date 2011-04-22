@@ -10,13 +10,16 @@ import qbix.sm.client.beans.User;
  */
 public interface  FileDao {
 
-    LinkedList<SmFile> getAllByUsersNickname(User nickName);
+    //for testing only!
+    LinkedList<SmFile> getAll();
 
-    LinkedList<SmFile> getAllByUsersId(Long id);
+    LinkedList<SmFile> getAllByUserName(User userName);
 
-    LinkedList<SmFile> getByCategoryId(Long userId,Long categoryId);
-    
-    LinkedList<SmFile> getByCategoryId(String userName,Long categoryId);
+    LinkedList<SmFile> getAllByUserId(Long id);
+
+    LinkedList<SmFile> getByCategoryId(Long categoryId);
 
     void add(SmFile newFile);
+
+    void deleteById(Long fileId);
 }

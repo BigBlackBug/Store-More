@@ -7,12 +7,18 @@ import qbix.sm.client.beans.User;
  *
  * @author iliax
  */
-public interface  UserDao {
+public interface UserDao {
 
-    //not a useful method
+    LinkedList<User> getAll();
+
     User getById(Long userId);
 
     User getByName(String userName);
 
     void add(User newUser);
+
+    void deleteById(Long userId);
+
+    void deleteByName(String name);
+    
 }

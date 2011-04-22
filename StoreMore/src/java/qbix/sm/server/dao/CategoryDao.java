@@ -7,17 +7,22 @@ import qbix.sm.client.beans.SmCategory;
  *
  * @author iliax
  */
+
 public interface CategoryDao {
 
-    //not a useful method
+    //for testing only!
+    LinkedList<SmCategory> getAll();
+
     SmCategory getById(Long categoryId);
-    //берёт корневые категории. без вложенных.
+    
     LinkedList<SmCategory> getByUserId(Long userId);
     
-    LinkedList<SmCategory> getByUsername(String userName);
-    
-    LinkedList<SmCategory> getNestedCategories(Long categoryId);
+    LinkedList<SmCategory> getByUserName(String userName);
 
-    void add(String userName,SmCategory parent,SmCategory newCategory);
+    //категория уже имеет ссылки на родителя и юзера!(все обертки делаются в сервисе!)
+    void add(SmCategory newCategory);
 
+    void deleteById(Long categoryId);
+
+    void deleteAllByUserId(Long userId);
 }
