@@ -9,8 +9,7 @@ import qbix.sm.client.beans.User;
  */
 public interface  UserDao {
 
-    LinkedList<User> getAll();
-
+    //not a useful method
     User getById(Long userId);
 
     User getByName(String userName);

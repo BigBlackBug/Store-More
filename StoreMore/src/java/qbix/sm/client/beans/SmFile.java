@@ -13,13 +13,13 @@ public class SmFile implements  IsSerializable{
 
     private Long fileId;
 
-    private Long catId;
+    private SmCategory category;
 
     //name of user's file
     private String realName;
 
     //server file name
-    private String pathName;
+    private String generatedName;
 
     //in Kb
     private Long size;
@@ -30,11 +30,11 @@ public class SmFile implements  IsSerializable{
     public SmFile() {
     }
 
-    public SmFile(Long id, Long catId, String realName, String pathName, Long size, Date uploadDate) {
+    public SmFile(Long id, SmCategory category, String realName, String pathName, Long size, Date uploadDate) {
         this.fileId = id;
-        this.catId = catId;
+        this.category = category;
         this.realName = realName;
-        this.pathName = pathName;
+        this.generatedName = pathName;
         this.size = size;
         this.uploadDate = uploadDate;
     }
@@ -43,13 +43,7 @@ public class SmFile implements  IsSerializable{
         return fileId;
     }
 
-    public Long getCatId() {
-        return catId;
-    }
-
-    public void setCatId(Long catId) {
-        this.catId = catId;
-    }
+   
 
     public String getRealName() {
         return realName;
@@ -60,11 +54,11 @@ public class SmFile implements  IsSerializable{
     }
 
     public String getPathName() {
-        return pathName;
+        return generatedName;
     }
 
     public void setPathName(String pathName) {
-        this.pathName = pathName;
+        this.generatedName = pathName;
     }
 
     public Long getSize() {
@@ -85,7 +79,23 @@ public class SmFile implements  IsSerializable{
 
     @Override
     public String toString() {
-        return fileId+" "+realName+" categId:"+catId;
+        return fileId+" "+realName+" categId:"+getCategory().getCategoryId();
+    }
+
+    /**
+     * @return the category
+     */
+    public SmCategory getCategory()
+    {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(SmCategory category)
+    {
+        this.category = category;
     }
 
 

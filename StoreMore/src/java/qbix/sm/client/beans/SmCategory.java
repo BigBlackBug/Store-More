@@ -12,9 +12,9 @@ public class SmCategory implements IsSerializable{
 
     private Long categoryId;
 
-    private Long parentId;
+    private SmCategory parentCategory;
 
-    private Long userId;
+    private User user;
 
     private String name;
 
@@ -29,9 +29,9 @@ public class SmCategory implements IsSerializable{
     public SmCategory() {
     }
 
-    public SmCategory(Long id, Long parentId, String name, String password, String description, LinkedList<SmFile> files, HashSet<SmCategory> childs) {
+    public SmCategory(Long id, SmCategory parentCategory, String name, String password, String description, LinkedList<SmFile> files, HashSet<SmCategory> childs) {
         this.categoryId = id;
-        this.parentId = parentId;
+        this.parentCategory = parentCategory;
         this.name = name;
         this.password = password;
         this.description = description;
@@ -47,22 +47,7 @@ public class SmCategory implements IsSerializable{
         this.categoryId = id;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
+   
 
     public String getName() {
         return name;
@@ -111,7 +96,7 @@ public class SmCategory implements IsSerializable{
             return true;
         if(obj instanceof SmCategory){
             SmCategory objCat=(SmCategory)obj;
-            if(objCat.getCategoryId().equals(categoryId))
+            if(objCat.getCategoryId().equals(getCategoryId()))
                 return true;
         }
         return false;
@@ -120,7 +105,7 @@ public class SmCategory implements IsSerializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + (this.categoryId != null ? this.categoryId.hashCode() : 0);
+        hash = 53 * hash + (this.getCategoryId() != null ? this.getCategoryId().hashCode() : 0);
         hash = 53 * hash + (this.name != null ? this.name.hashCode() : 0);
         hash = 53 * hash + (this.password != null ? this.password.hashCode() : 0);
         return hash;
@@ -128,6 +113,38 @@ public class SmCategory implements IsSerializable{
 
     @Override
     public String toString() {
-        return categoryId+", "+name+", parentId:"+parentId+"subCategories:"+children.toString()+",  files:"+files.toString();
+        return getCategoryId()+", "+name+", parentId:"+parentCategory.getCategoryId()+"subCategories:"+children.toString()+",  files:"+files.toString();
+    }
+
+    /**
+     * @return the parentCategory
+     */
+    public SmCategory getParentCategory()
+    {
+        return parentCategory;
+    }
+
+    /**
+     * @param parentCategory the parentCategory to set
+     */
+    public void setParentCategory(SmCategory parentCategory)
+    {
+        this.parentCategory = parentCategory;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser()
+    {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 }
