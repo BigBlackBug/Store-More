@@ -22,8 +22,6 @@ public class UserDAOMock implements UserDao
 
     public LinkedList<User> getAll()
     {
-        users.add(new User(new Long(1), "iliax", "fdsf", "dhghr", "GDF"));
-        users.add(new User(new Long(2), "ili123ax", "fWERdsf", "dWERhghr", "GDWERF"));
         return users;
     }
 
