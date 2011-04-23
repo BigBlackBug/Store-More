@@ -5,16 +5,15 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
-import org.apache.http.auth.AUTH;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
 import qbix.sm.client.presenters.Presenter;
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;
+import qbix.sm.client.services.UserServiceAsync;
 
 /**
  *
@@ -23,18 +22,24 @@ import qbix.sm.client.services.SessionServiceAsync;
 public class MainController implements  ValueChangeHandler<String>, Presenter{
     
     //injected
-    //yes, it is injected
     private EventBus eventBus;
-    //private UserServiceAsync userService
+
+    //injected
+    private UserServiceAsync userService;
+
+    private SessionServiceAsync sessionService=GWT.create(SessionService.class);
+
     private HasWidgets container;
 
-    //для запоминания предыдущего состояния истории
+    //для запоминания предыдущего состояния истории(может понадобится)
     String tempHistoryItem;
 
+    Presenter currentPresenter;
+
     @Inject  
-    public MainController(EventBus eventBus /*, UserServiceAsync userService*/) {
+    public MainController(EventBus eventBus , UserServiceAsync userService) {
         this.eventBus = eventBus;
-        //this.userService=userService
+        this.userService=userService;
         bind();
     }
 
@@ -61,50 +66,27 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
 
 
     public void onValueChange(ValueChangeEvent<String> event) {
-        String token=event.getValue();
+       final  String token=event.getValue();
 
         if(token!=null){
-            Presenter presenter = null;
-            
-            if(SessionChecker.isAuthenticated()){
-                
-            }
-            else{
-                //switch
-            }
-            
-            
-            if (presenter!=null)
-                presenter.go(container);
-        }
-    }
-
-    public static class SessionChecker {
-         private static SessionServiceAsync sessionService=GWT.create(SessionService.class);
-         private static boolean auth=false;
-         private static User userInSession=null;
-         public static boolean isAuthenticated(){
-            sessionService.isAuthenticated(new AsyncCallback<Boolean>() {
-                public void onFailure(Throwable caught) {}
-                public void onSuccess(Boolean result) {
-                    auth=result;
+            sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
+                @Override
+                public void handleFailture(Throwable caugh) {
+                    //session access failed presenter
+                    //currentPresenter.go(container);
                 }
-            });
-            return auth;
-        }
-        public static User getUserFromSesion(){
-            sessionService.getUserFromSession(new AsyncCallback<User>() {
-                public void onFailure(Throwable caught) { }
-                public void onSuccess(User result) {
-                    userInSession=result;
+                @Override
+                public void handleSuccess(User result) {
+                    if(result!=null){
+                        //owner switch
+                    }
+                    else{
+                        //guest switch
+                    }
+                        
+                    if (currentPresenter!=null)
+                        currentPresenter.go(container);
                 }
-            });
-            return userInSession;
-        }
-        public static void addUserToSession(User user){
-            sessionService.addUserToSession(user, new AsyncCallback<Void>() {
-                public void onFailure(Throwable caught) {}
-                public void onSuccess(Void result) {}
             });
         }
     }

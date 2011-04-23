@@ -28,6 +28,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 <!-- /DAOs -->
 
 <!-- Services -->
-
+    <bean name="userservice" class="qbix.sm.server.services.UserServiceImpl"/>
 
 </beans>

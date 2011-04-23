@@ -19,4 +19,5 @@ public interface SessionService extends RemoteService {
     public void invalidate();
 
     public User getUserFromSession();
+    
 }
