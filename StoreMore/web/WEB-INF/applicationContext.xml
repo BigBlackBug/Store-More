@@ -11,23 +11,27 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 <!-- PREFERENSES -->
     <!-- for gwt bridge (Spring integration) -->
-        <bean class="org.workingonit.gwtbridge.GwtServicesRegistrar"/>
+    <bean class="org.workingonit.gwtbridge.GwtServicesRegistrar"/>
     <!-- / -->
 
     <aop:aspectj-autoproxy/>
 <!-- /PREFERENSES -->
 
 <!-- DAOs -->
-<!--
-    <bean name="userDao" class="qbix.sm.server.dao.UserDaoMock"/>
 
-    <bean name="fileDao" class="qbix.sm.server.dao.FileDaoMock"/>
+    <bean name="userDao" class="qbix.sm.server.dao.UserDAOMock"/>
 
-    <bean name="categoryDao" class="qbix.sm.server.dao.UserDaoMock"/>
--->
+    <bean name="fileDao" class="qbix.sm.server.dao.FileDAOMock"/>
+
+    <bean name="categoryDao" class="qbix.sm.server.dao.UserDAOMock"/>
+
 <!-- /DAOs -->
 
 <!-- Services -->
-    <bean name="userservice" class="qbix.sm.server.services.UserServiceImpl"/>
+    
+    <bean name="FCService" class="qbix.sm.server.services.FileAndCategoryServiceImpl">
+        <property name="fileDAO" ref="fileDao"/>
+        <property name="categoryDAO" ref="categoryDao"/>
+    </bean>
 
 </beans>
