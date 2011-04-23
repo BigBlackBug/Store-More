@@ -14,7 +14,7 @@ import qbix.sm.client.services.UserService;
  * @author iliax
  */
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
     
 }
