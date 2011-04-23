@@ -22,21 +22,20 @@ public class SmCategory implements IsSerializable{
 
     private String description;
 
-    private LinkedList<SmFile> files;
+    private LinkedList<SmFile> files=new LinkedList<SmFile>();
 
-    private HashSet<SmCategory> children;
+    private HashSet<SmCategory> children=new HashSet<SmCategory>();
 
     public SmCategory() {
     }
 
-    public SmCategory(Long id, SmCategory parentCategory, String name, String password, String description, LinkedList<SmFile> files, HashSet<SmCategory> childs) {
+    public SmCategory(Long id, SmCategory parentCategory, String name, String password, String description) {
         this.categoryId = id;
         this.parentCategory = parentCategory;
         this.name = name;
         this.password = password;
         this.description = description;
-        this.files = files;
-        this.children = childs;
+       
     }
 
     public Long getCategoryId() {

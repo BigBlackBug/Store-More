@@ -2,6 +2,7 @@ package qbix.sm.server.dao;
 
 import java.util.LinkedList;
 import qbix.sm.client.beans.SmCategory;
+import qbix.sm.client.beans.User;
 
 /**
  *
