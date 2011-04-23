@@ -5,18 +5,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
->>>>>>>>>>>>>>>>>>>> File 1
->>>>>>>>>>>>>>>>>>>> File 2
-import com.google.gwt.user.client.rpc.AsyncCallback;
->>>>>>>>>>>>>>>>>>>> File 3
-<<<<<<<<<<<<<<<<<<<<
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
->>>>>>>>>>>>>>>>>>>> File 1
->>>>>>>>>>>>>>>>>>>> File 2
-import org.apache.http.auth.AUTH;
->>>>>>>>>>>>>>>>>>>> File 3
-<<<<<<<<<<<<<<<<<<<<
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
@@ -32,11 +22,6 @@ import qbix.sm.client.services.UserServiceAsync;
 public class MainController implements  ValueChangeHandler<String>, Presenter{
     
     //injected
->>>>>>>>>>>>>>>>>>>> File 1
->>>>>>>>>>>>>>>>>>>> File 2
-    //yes, it is injected
->>>>>>>>>>>>>>>>>>>> File 3
-<<<<<<<<<<<<<<<<<<<<
     private EventBus eventBus;
 
     //injected
@@ -103,17 +88,7 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
                         currentPresenter.go(container);
                 }
             });
->>>>>>>>>>>>>>>>>>>> File 1
->>>>>>>>>>>>>>>>>>>> File 2
-            return userInSession;
-        }
-        public static void addUserToSession(User user){
-            sessionService.addUserToSession(user, new AsyncCallback<Void>() {
-                public void onFailure(Throwable caught) {}
-                public void onSuccess(Void result) {}
-            });
->>>>>>>>>>>>>>>>>>>> File 3
-<<<<<<<<<<<<<<<<<<<<
+
         }
     }
 }
