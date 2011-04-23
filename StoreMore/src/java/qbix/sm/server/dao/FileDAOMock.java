@@ -13,11 +13,11 @@ import qbix.sm.client.beans.User;
  *
  * @author BigBlackBug
  */
-public class FileDAOImpl implements FileDao
+public class FileDAOMock implements FileDao
 {
     LinkedList<SmFile> files;
 
-    public FileDAOImpl()
+    public FileDAOMock()
     {
         files = new LinkedList<SmFile>();
     }
@@ -31,7 +31,7 @@ public class FileDAOImpl implements FileDao
     {
         // UserDao userDao=new UserDAOImpl();
         //User user=userDao.getByName(userName);
-        CategoryDao cat = new CategoryDAOImpl();
+        CategoryDao cat = new CategoryDAOMock();
         LinkedList<SmCategory> cats = cat.getAllCategoriesOfUser(userName);
         if(!cats.isEmpty())
             System.out.println("cats not empty");
@@ -46,7 +46,7 @@ public class FileDAOImpl implements FileDao
 
     public LinkedList<SmFile> getAllFilesOfUserById(Long id)
     {
-        CategoryDao cat = new CategoryDAOImpl();
+        CategoryDao cat = new CategoryDAOMock();
         LinkedList<SmCategory> cats = cat.getAllCategoriesOfUserById(id);
 
         LinkedList<SmFile> files1 = new LinkedList<SmFile>();
@@ -58,7 +58,7 @@ public class FileDAOImpl implements FileDao
 
     public LinkedList<SmFile> getAllFilesFromCategory(Long categoryId)
     {
-        CategoryDao cat = new CategoryDAOImpl();
+        CategoryDao cat = new CategoryDAOMock();
         return cat.getById(categoryId).getFiles();// LinkedList<SmCategory> cats=cat.getAllCategoriesOfUser(userName);
 
 

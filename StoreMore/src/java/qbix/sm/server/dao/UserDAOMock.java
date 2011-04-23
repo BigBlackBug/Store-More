@@ -11,11 +11,11 @@ import qbix.sm.client.beans.User;
  *
  * @author BigBlackBug
  */
-public class UserDAOImpl implements UserDao
+public class UserDAOMock implements UserDao
 {
     LinkedList<User> users;
 
-    public UserDAOImpl()
+    public UserDAOMock()
     {
         users = new LinkedList<User>();
     }

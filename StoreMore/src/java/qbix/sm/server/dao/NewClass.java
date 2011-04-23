@@ -17,9 +17,9 @@ public class NewClass
 {
     public static void main(String[] args)
     {
-        UserDAOImpl udao = new UserDAOImpl();
-        CategoryDAOImpl cdao = new CategoryDAOImpl();
-        FileDAOImpl fdao = new FileDAOImpl();
+        UserDAOMock udao = new UserDAOMock();
+        CategoryDAOMock cdao = new CategoryDAOMock();
+        FileDAOMock fdao = new FileDAOMock();
 
         User user = new User(1l, "bigblackbug", "email1", "pass1", "path1");
 

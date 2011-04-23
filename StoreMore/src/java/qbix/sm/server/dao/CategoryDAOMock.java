@@ -11,11 +11,11 @@ import qbix.sm.client.beans.SmCategory;
  *
  * @author BigBlackBug
  */
-public class CategoryDAOImpl implements CategoryDao
+public class CategoryDAOMock implements CategoryDao
 {
     LinkedList<SmCategory> categories;
 
-    public CategoryDAOImpl()
+    public CategoryDAOMock()
     {
         categories = new LinkedList<SmCategory>();
     }
