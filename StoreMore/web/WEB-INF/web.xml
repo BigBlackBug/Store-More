@@ -49,6 +49,16 @@
         <servlet-name>SessionService</servlet-name>
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FileAndCategoryService</servlet-name>
+        <url-pattern>/qbix.sm.Main/services/FCService.rpc</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>FileAndCategoryService</servlet-name>
+        <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
+    </servlet>
+
     <servlet>
         <servlet-name>UserService</servlet-name>
         <servlet-class>qbix.sm.server.services.UserServiceImpl</servlet-class>
@@ -57,12 +67,7 @@
         <servlet-name>UserService</servlet-name>
         <url-pattern>/qbix.sm.Main/userservice</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
-        <servlet-name>FileAndCategoryService</servlet-name>
-        <url-pattern>/qbix.sm.Main/services/FCService.rpc</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>FileAndCategoryService</servlet-name>
-        <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
-    </servlet>
+
+    
+
 </web-app>
