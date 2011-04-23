@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;
+import qbix.sm.client.services.UserServiceAsync;
 
 
 /**

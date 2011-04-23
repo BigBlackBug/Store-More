@@ -47,7 +47,8 @@
         <servlet-name>SessionService</servlet-name>
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
-    
+
+    <!--
         <servlet>
         <servlet-name>UserService</servlet-name>
         <servlet-class>qbix.sm.server.services.UserServiceImpl</servlet-class>
@@ -56,4 +57,5 @@
         <servlet-name>UserService</servlet-name>
         <url-pattern>/qbix.sm.Main/userservice</url-pattern>
     </servlet-mapping>
+    -->
 </web-app>
