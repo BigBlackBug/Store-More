@@ -41,7 +41,7 @@ public class HeaderPanel extends HorizontalPanel{
     //injected
     private UserServiceAsync userService;
 
-    private SessionServiceAsync sessionService=GWT.create(SessionService.class);
+private SessionServiceAsync sessionService=GWT.create(SessionService.class);
 
     @Inject
     public HeaderPanel(EventBus eventBus, UserServiceAsync userService) {
