@@ -15,14 +15,16 @@ public interface CategoryDao {
 
     SmCategory getById(Long categoryId);
     
-    LinkedList<SmCategory> getByUserId(Long userId);
+    LinkedList<SmCategory> getAllCategoriesOfUserById(Long userId);
     
-    LinkedList<SmCategory> getByUserName(String userName);
+    LinkedList<SmCategory> getAllCategoriesOfUser(String userName);
 
     //категория уже имеет ссылки на родителя и юзера!(все обертки делаются в сервисе!)
     void add(SmCategory newCategory);
 
     void deleteById(Long categoryId);
 
-    void deleteAllByUserId(Long userId);
+    void deleteAllCategoriesOfUserById(Long userId);
+
+    void deleteAllCategoriesOfUser(String userName);
 }
