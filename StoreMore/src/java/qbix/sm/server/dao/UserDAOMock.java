@@ -21,7 +21,7 @@ public class UserDAOMock implements UserDao
     }
 
     public LinkedList<User> getAll()
-    {
+    { 
         return users;
     }
 

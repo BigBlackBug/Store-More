@@ -30,7 +30,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 <!-- Services -->
 
     
-    <bean name="FCService" class="qbix.sm.server.services.FileAndCategoryServiceImpl">
+    <bean name="FCService" class="qbix.sm.server.services.FCServiceImpl">
         <property name="fileDAO" ref="fileDao"/>
         <property name="categoryDAO" ref="categoryDao"/>
     </bean>

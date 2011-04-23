@@ -17,7 +17,7 @@ import qbix.sm.server.dao.FileDao;
  *
  * @author BigBlackBug
  */
-public class FCServiceImpl implements FCService  // extends RemoteServiceServlet
+public class FCServiceImpl  extends RemoteServiceServlet implements FCService
 {
     private FileDao fileDAO;
     private CategoryDao categoryDAO;
