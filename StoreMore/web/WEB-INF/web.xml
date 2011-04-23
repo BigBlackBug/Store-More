@@ -33,14 +33,7 @@
         <servlet-name>gwtbridge</servlet-name>
         <url-pattern>*.rpc</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FileAndCategoryService</servlet-name>
-        <url-pattern>/qbix.sm.Main/services/FCService.rpc</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>FileAndCategoryService</servlet-name>
-        <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
-    </servlet>
+   
     <!-- /GWT Bridge (Spring integration) -->
     <!-- сервлеты с маппингами добавлять сюда!(по умолч вставляет  в разные места - потом трудно разобраться)
      в общем СЛЕДИТЬ! -->
@@ -64,4 +57,12 @@
         <servlet-name>UserService</servlet-name>
         <url-pattern>/qbix.sm.Main/userservice</url-pattern>
     </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>FileAndCategoryService</servlet-name>
+        <url-pattern>/qbix.sm.Main/services/FCService.rpc</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>FileAndCategoryService</servlet-name>
+        <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
+    </servlet>
 </web-app>

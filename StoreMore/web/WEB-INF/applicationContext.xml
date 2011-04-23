@@ -9,13 +9,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-<!-- PREFERENSES -->
+<!-- PREFERENCES -->
     <!-- for gwt bridge (Spring integration) -->
     <bean class="org.workingonit.gwtbridge.GwtServicesRegistrar"/>
     <!-- / -->
 
     <aop:aspectj-autoproxy/>
-<!-- /PREFERENSES -->
+<!-- /PREFERENCES -->
 
 <!-- DAOs -->
 
