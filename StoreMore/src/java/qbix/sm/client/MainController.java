@@ -6,12 +6,15 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 import java.util.LinkedList;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
+import qbix.sm.client.presenters.AccountOwnerPagePresenter;
+import qbix.sm.client.presenters.AccountPagePresenter;
 import qbix.sm.client.presenters.Presenter;
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;
@@ -38,6 +41,8 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
 
     Presenter currentPresenter;
 
+    User targetPageOwner;
+
     @Inject  
     public MainController(EventBus eventBus , UserServiceAsync userService) {
         this.eventBus = eventBus;
@@ -51,8 +56,9 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
         //привязываем все ивенты здесь:
         
         eventBus.addHandler(ShowAccoutPageEvent.TYPE, new ShowAccoutPageEvent.Event_Handler() {
-            public void onShowAccountPageEvent(ShowAccoutPageEvent showAccoutPageEvent) {
-                //
+            public void onShowAccountPageEvent(ShowAccoutPageEvent event) {
+                targetPageOwner=event.getAccountOwner();
+                History.newItem(targetPageOwner.getName());
             }
         });
     }
@@ -61,7 +67,7 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
         this.container = container;
 
         if ("".equals(History.getToken())) 
-          ;//start presenter
+          History.newItem("main");
         else 
           History.fireCurrentHistoryState();
     }
@@ -71,6 +77,9 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
        final  String token=event.getValue();
 
         if(token!=null){
+           if("".equals(History.getToken()))
+                History.newItem("main");
+
             sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
                 @Override
                 public void handleFailture(Throwable caugh) {
@@ -78,19 +87,42 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
                     //currentPresenter.go(container);
                 }
                 @Override
-                public void handleSuccess(User result) {
-                    if(result!=null){
-                        //owner switch
+                public void handleSuccess(User userInSession) {
+                    if(userInSession!=null){
+                        //for page owners:
+                        if(token.equals("main")){
+                            AccountOwnerPagePresenter aopp=
+                                    MainEntryPoint.GINJECTOR.getAccountOwnerPagePresenter();
+                            aopp.setOwner(userInSession);
+                            currentPresenter=aopp;
+                        } else
+                        if(targetPageOwner.equals(userInSession)){
+                            AccountOwnerPagePresenter aopp=
+                                    MainEntryPoint.GINJECTOR.getAccountOwnerPagePresenter();
+                            aopp.setOwner(userInSession);
+                            targetPageOwner=null;
+                            currentPresenter=aopp;
+                        }
+                        
                     }
-                    else{
-                        //guest switch
+                    else {
+                        //for page guests:
+                        if(token.equals("main"))
+                            currentPresenter=MainEntryPoint.GINJECTOR.getMainPagePresenter();
+                        else
+                        if(targetPageOwner!=null){
+                            AccountPagePresenter app=
+                                    MainEntryPoint.GINJECTOR.getAccountPagePresenter();
+                            app.setOwner(targetPageOwner);
+                            targetPageOwner=null;
+                            currentPresenter=app;
+                        }
                     }
                         
                     if (currentPresenter!=null)
                         currentPresenter.go(container);
                 }
             });
-
         }
     }
 }

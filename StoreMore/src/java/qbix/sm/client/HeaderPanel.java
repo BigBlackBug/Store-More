@@ -8,7 +8,10 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import java.util.LinkedList;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
@@ -79,13 +82,42 @@ public class HeaderPanel extends HorizontalPanel{
     }
 
     private void initLogInPanel(){
-        //logInButton.addListener(null, null);
+        logInButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+                    @Override
+                    public void handleFailture(Throwable caugh) {}
+                    @Override
+                    public void handleSuccess(final User result) {
+                        if(result!=null)
+                            if(result.getPassword().equals(userPasswordField.getValue())==true){
+                                sessionService.addUserToSession(result, new AbstractAsyncCallBack<Void>() {
+                                    @Override
+                                    public void handleFailture(Throwable caugh) {}
+                                    @Override
+                                    public void handleSuccess(Void voidres) {
+                                        HeaderPanel.this.setAuthMode(result);
+                                    }
+                                });
+                            }
+                            else
+                                Window.alert("wrong data!");
+                        else
+                          Window.alert("wrong data!");
+
+                    }
+                });
+            }
+        });
         logInForm.setCollapsible(true);
         logInForm.collapse();
         logInForm.setTitleCollapse(true);
         logInForm.setHeading("Log In Form");
         userNameField.setFieldLabel("nick");
+        userNameField.setValue("");
         userPasswordField.setFieldLabel("passw");
+        userPasswordField.setValue("");
         userPasswordField.setPassword(true);
         logInForm.add(userNameField);
         logInForm.add(userPasswordField);
@@ -93,7 +125,22 @@ public class HeaderPanel extends HorizontalPanel{
     }
 
     private void initUserSearch() {
-        //userSeachButton.addListener(null, null);
+        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+                    @Override
+                    public void handleFailture(Throwable caugh) {}
+                    @Override
+                    public void handleSuccess(User result) {
+                        if(result!=null)
+                            goToAccountPage(result);
+                        else
+                            Window.alert("no users with this name!");
+                    }
+                });
+            }
+        });
     }
 
     public void setAuthMode(User user){
@@ -120,6 +167,14 @@ public class HeaderPanel extends HorizontalPanel{
                 });
             }
         });
+        userSearchField.setValue("");
+        userNameButton.setVisible(true);
+        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+               eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
+            }
+        });
     }
 
     public void setGuestMode(){
@@ -128,5 +183,6 @@ public class HeaderPanel extends HorizontalPanel{
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);
         logOffButton.setVisible(false);
+        userSearchField.setValue("");
     }
 }
