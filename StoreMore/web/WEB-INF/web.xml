@@ -5,17 +5,14 @@
             30
         </session-timeout>
     </session-config>
-    
     <welcome-file-list>
         <welcome-file>baseGwtPage.html</welcome-file>
     </welcome-file-list>
-
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/ErrorPage.html</location>
     </error-page>
-
-  <!-- FOR SPRING (basic ContextLoaderListener) -->
+    <!-- FOR SPRING (basic ContextLoaderListener) -->
     <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
@@ -25,9 +22,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>WEB-INF/applicationContext.xml</param-value>
     </context-param>
-  <!-- /FOR SPRING -->
-
-<!-- GWT Bridge (Spring integration) -->
+    <!-- /FOR SPRING -->
+    <!-- GWT Bridge (Spring integration) -->
     <servlet>
         <servlet-name>gwtbridge</servlet-name>
         <servlet-class>org.workingonit.gwtbridge.GwtBridgeServlet</servlet-class>
@@ -37,12 +33,14 @@
         <servlet-name>gwtbridge</servlet-name>
         <url-pattern>*.rpc</url-pattern>
     </servlet-mapping>
-<!-- /GWT Bridge (Spring integration) -->
-
-<!-- сервлеты с маппингами добавлять сюда!(по умолч вставляет  в разные места - потом трудно разобраться)
+    <!-- /GWT Bridge (Spring integration) -->
+    <!-- сервлеты с маппингами добавлять сюда!(по умолч вставляет  в разные места - потом трудно разобраться)
      в общем СЛЕДИТЬ! -->
     <servlet>
-        <servlet-name>SessionService</servlet-name>
+        <servlet-name>SessionService</servlet-name>    <servlet-mapping>
+        <servlet-name>UserService</servlet-name>
+        <url-pattern>/qbix.sm.Main/userservice.rpc</url-pattern>
+    </servlet-mapping>
         <servlet-class>qbix.sm.server.services.SessionServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
@@ -50,4 +48,12 @@
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
     
+        <servlet>
+        <servlet-name>UserService</servlet-name>
+        <servlet-class>qbix.sm.server.services.UserServiceImpl</servlet-class>
+    </servlet>
+        <servlet-mapping>
+        <servlet-name>UserService</servlet-name>
+        <url-pattern>/qbix.sm.Main/userservice</url-pattern>
+    </servlet-mapping>
 </web-app>

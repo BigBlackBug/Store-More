@@ -13,6 +13,8 @@ import com.google.gwt.inject.client.Ginjector;
 public interface MainGinjector extends Ginjector{
 
     MainController getMainController();
+
+    HeaderPanel getHeaderPanel();
     
     //presenters:
 
