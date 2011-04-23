@@ -13,11 +13,11 @@ import qbix.sm.client.beans.User;
  */
 public class UserDAOMock implements UserDao
 {
-    LinkedList<User> users;
+    private static LinkedList<User> users = new LinkedList<User>();
 
     public UserDAOMock()
     {
-        users = new LinkedList<User>();
+        
     }
 
     public LinkedList<User> getAll()

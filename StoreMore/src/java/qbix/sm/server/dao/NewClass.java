@@ -29,20 +29,17 @@ public class NewClass
         SmFile file = new SmFile(1L, cat, "realname1", "generated1", 777L, null);
 
         cat.setUser(user);
-        
+        innercat.setUser(user);
         cat.getFiles().add(file);
 
-        cdao.add(innercat);
+        
         cdao.add(cat);
+        cdao.add(innercat);
+
         udao.add(user);
         fdao.add(file);
 
-       /*for(SmFile f:fdao.files)
-            System.out.println(f.getRealName());
-
-       for(SmCategory c:cdao.categories)
-            System.out.println(c.getName()+" "+c.getUser().getName()+c.getFiles().peek().getRealName());*/
-
+      
         LinkedList<SmFile> files=fdao.getAllFilesOfUser("bigblackbug");
 
         for(SmFile f:files)

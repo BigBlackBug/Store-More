@@ -15,11 +15,10 @@ import qbix.sm.client.beans.User;
  */
 public class FileDAOMock implements FileDao
 {
-    LinkedList<SmFile> files;
+    private static LinkedList<SmFile> files = new LinkedList<SmFile>();
 
     public FileDAOMock()
     {
-        files = new LinkedList<SmFile>();
     }
 
     public LinkedList<SmFile> getAll()
@@ -31,23 +30,29 @@ public class FileDAOMock implements FileDao
     {
         // UserDao userDao=new UserDAOImpl();
         //User user=userDao.getByName(userName);
-        CategoryDao cat = new CategoryDAOMock();
-        LinkedList<SmCategory> cats = cat.getAllCategoriesOfUser(userName);
-        if(!cats.isEmpty())
-            System.out.println("cats not empty");
+        LinkedList<SmCategory> cats = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
+       
+        for (SmCategory c : CategoryDAOMock.getcats())
+            if (c.getUser().getName().equals(userName))
+                cats.add(c);
+
+
         LinkedList<SmFile> files1 = new LinkedList<SmFile>();
 
         for (SmCategory c : cats)
             files1.addAll(c.getFiles());
-        if(!files1.isEmpty())
-            System.out.println("files1 not empty");
+
         return files1;
     }
 
     public LinkedList<SmFile> getAllFilesOfUserById(Long id)
     {
-        CategoryDao cat = new CategoryDAOMock();
-        LinkedList<SmCategory> cats = cat.getAllCategoriesOfUserById(id);
+
+        LinkedList<SmCategory> cats = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
+
+        for (SmCategory c : CategoryDAOMock.getcats())
+            if (c.getUser().getUserId() == id)
+                cats.add(c);
 
         LinkedList<SmFile> files1 = new LinkedList<SmFile>();
 
@@ -58,8 +63,15 @@ public class FileDAOMock implements FileDao
 
     public LinkedList<SmFile> getAllFilesFromCategory(Long categoryId)
     {
-        CategoryDao cat = new CategoryDAOMock();
-        return cat.getById(categoryId).getFiles();// LinkedList<SmCategory> cats=cat.getAllCategoriesOfUser(userName);
+        SmCategory cat = new SmCategory();
+
+        for (SmCategory c : CategoryDAOMock.getcats())
+            if (c.getCategoryId() == categoryId)
+            {
+                cat = c;
+                break;
+            }
+        return cat.getFiles();// LinkedList<SmCategory> cats=cat.getAllCategoriesOfUser(userName);
 
 
     }
@@ -72,8 +84,8 @@ public class FileDAOMock implements FileDao
     public void deleteById(Long fileId)
     {
 
-        for(SmFile f:files)
-            if(f.getFileId()==fileId)
+        for (SmFile f : files)
+            if (f.getFileId() == fileId)
                 files.remove(f);
     }
 }

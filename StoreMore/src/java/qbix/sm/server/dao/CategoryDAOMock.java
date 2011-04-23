@@ -13,11 +13,15 @@ import qbix.sm.client.beans.SmCategory;
  */
 public class CategoryDAOMock implements CategoryDao
 {
-    LinkedList<SmCategory> categories;
+    private static LinkedList<SmCategory> categories = new LinkedList<SmCategory>();
 
     public CategoryDAOMock()
     {
-        categories = new LinkedList<SmCategory>();
+    }
+
+    public static LinkedList<SmCategory> getcats()
+    {
+        return categories;
     }
 
     public LinkedList<SmCategory> getAll()
@@ -42,7 +46,7 @@ public class CategoryDAOMock implements CategoryDao
     public LinkedList<SmCategory> getAllCategoriesOfUserById(Long userId)
     {
         LinkedList<SmCategory> result = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
-
+       
         for (SmCategory c : categories)
             if (c.getUser().getUserId() == userId)
                 result.add(c);
@@ -69,7 +73,7 @@ public class CategoryDAOMock implements CategoryDao
     //Следующие три метода мего крабские, но что ж поделаешь. Заглушка.
     public void deleteById(Long categoryId)
     {
-       categories.remove(getById(categoryId));
+        categories.remove(getById(categoryId));
 
     }
 
