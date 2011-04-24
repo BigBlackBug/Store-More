@@ -43,8 +43,6 @@ public class HeaderPanel extends HorizontalPanel
     //injected
     private UserServiceAsync userService;
     private SessionServiceAsync sessionService = GWT.create(SessionService.class);
-    private FCServiceAsync fcSrevice = GWT.create(FCService.class);
-   
 
     @Inject
     public HeaderPanel(EventBus eventBus, UserServiceAsync userService)
@@ -96,7 +94,7 @@ public class HeaderPanel extends HorizontalPanel
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                         
+
                 userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>()
                 {
                     @Override
