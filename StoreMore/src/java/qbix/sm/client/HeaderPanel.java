@@ -10,12 +10,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import java.util.LinkedList;
+import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
+import qbix.sm.client.services.FCService;
+import qbix.sm.client.services.FCServiceAsync;
+
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;
 import qbix.sm.client.services.UserServiceAsync;
@@ -24,33 +27,30 @@ import qbix.sm.client.services.UserServiceAsync;
  *
  * @author iliax
  */
-
-public class HeaderPanel extends HorizontalPanel{
-
-    Button userNameButton=new Button();
-    TextField<String> userSearchField=new TextField<String>();
-    Button userSeachButton=new Button("search!");
-    Button logOffButton=new Button("logOff!");
-
+public class HeaderPanel extends HorizontalPanel
+{
+    Button userNameButton = new Button();
+    TextField<String> userSearchField = new TextField<String>();
+    Button userSeachButton = new Button("search!");
+    Button logOffButton = new Button("logOff!");
     User currentUser;
-
-    FormPanel logInForm=new FormPanel();
-        TextField<String> userNameField=new TextField<String>();
-        TextField<String> userPasswordField=new TextField<String>();
-        Button logInButton=new Button("logIn!");
-
+    FormPanel logInForm = new FormPanel();
+    TextField<String> userNameField = new TextField<String>();
+    TextField<String> userPasswordField = new TextField<String>();
+    Button logInButton = new Button("logIn!");
     //injected
     private EventBus eventBus;
-
     //injected
     private UserServiceAsync userService;
-
-    private SessionServiceAsync sessionService=GWT.create(SessionService.class);
+    private SessionServiceAsync sessionService = GWT.create(SessionService.class);
+    private FCServiceAsync fcSrevice = GWT.create(FCService.class);
+   
 
     @Inject
-    public HeaderPanel(EventBus eventBus, UserServiceAsync userService) {
-        this.eventBus=eventBus;
-        this.userService=userService;
+    public HeaderPanel(EventBus eventBus, UserServiceAsync userService)
+    {
+        this.eventBus = eventBus;
+        this.userService = userService;
 
         add(userNameButton);
 
@@ -65,48 +65,68 @@ public class HeaderPanel extends HorizontalPanel{
 
         add(logOffButton);
 
-        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
+
+        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>()
+        {
             @Override
-            public void handleFailture(Throwable caugh) {}
+            public void handleFailture(Throwable caugh)
+            {
+            }
+
             @Override
-            public void handleSuccess(User result) {
-                if (result!=null)
+            public void handleSuccess(User result)
+            {
+                if (result != null)
                     setAuthMode(result);
                 else
                     setGuestMode();
             }
         });
-      }
+    }
 
-    private void  goToAccountPage(User user){
+    private void goToAccountPage(User user)
+    {
         eventBus.fireEvent(new ShowAccoutPageEvent(user));
     }
 
-    private void initLogInPanel(){
-        logInButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+    private void initLogInPanel()
+    {
+        logInButton.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
             @Override
-            public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+            public void componentSelected(ButtonEvent ce)
+            {
+                         
+                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>()
+                {
                     @Override
-                    public void handleFailture(Throwable caugh) {}
+                    public void handleFailture(Throwable caugh)
+                    {
+                    }
+
                     @Override
-                    public void handleSuccess(final User result) {
-                        if(result!=null)
-                            if(result.getPassword().equals(userPasswordField.getValue())==true){
-                                sessionService.addUserToSession(result, new AbstractAsyncCallBack<Void>() {
+                    public void handleSuccess(final User result)
+                    {
+                        if (result != null)
+                            if (result.getPassword().equals(userPasswordField.getValue()) == true)
+                                sessionService.addUserToSession(result, new AbstractAsyncCallBack<Void>()
+                                {
                                     @Override
-                                    public void handleFailture(Throwable caugh) {}
+                                    public void handleFailture(Throwable caugh)
+                                    {
+                                    }
+
                                     @Override
-                                    public void handleSuccess(Void voidres) {
+                                    public void handleSuccess(Void voidres)
+                                    {
                                         HeaderPanel.this.setAuthMode(result);
                                         eventBus.fireEvent(new ShowAccoutPageEvent(result));
                                     }
                                 });
-                            }
                             else
                                 Window.alert("wrong data!");
                         else
-                          Window.alert("wrong data!");
+                            Window.alert("wrong data!");
 
                     }
                 });
@@ -126,16 +146,24 @@ public class HeaderPanel extends HorizontalPanel{
         logInForm.add(logInButton);
     }
 
-    private void initUserSearch() {
-        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+    private void initUserSearch()
+    {
+        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
             @Override
-            public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+            public void componentSelected(ButtonEvent ce)
+            {
+                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallBack<User>()
+                {
                     @Override
-                    public void handleFailture(Throwable caugh) {}
+                    public void handleFailture(Throwable caugh)
+                    {
+                    }
+
                     @Override
-                    public void handleSuccess(User result) {
-                        if(result!=null)
+                    public void handleSuccess(User result)
+                    {
+                        if (result != null)
                             goToAccountPage(result);
                         else
                             Window.alert("no users with this name!");
@@ -145,27 +173,38 @@ public class HeaderPanel extends HorizontalPanel{
         });
     }
 
-    public void setAuthMode(User user){
-        currentUser=user;
+    public void setAuthMode(User user)
+    {
+        currentUser = user;
         logInForm.collapse();
         userNameButton.setText(user.getName());
-        userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+        userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
             @Override
-            public void componentSelected(ButtonEvent ce) {
+            public void componentSelected(ButtonEvent ce)
+            {
                 eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
             }
         });
         logInForm.setVisible(false);
         logOffButton.setVisible(true);
-        logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+        logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
             @Override
-            public void componentSelected(ButtonEvent ce) {
-               sessionService.invalidate(new AbstractAsyncCallBack<Void>() {
+            public void componentSelected(ButtonEvent ce)
+            {
+
+                sessionService.invalidate(new AbstractAsyncCallBack<Void>()
+                {
                     @Override
-                    public void handleFailture(Throwable caugh) {}
+                    public void handleFailture(Throwable caugh)
+                    {
+                    }
+
                     @Override
-                    public void handleSuccess(Void result) {
-                       /// goToAccountPage(currentUser);
+                    public void handleSuccess(Void result)
+                    {
+                        /// goToAccountPage(currentUser);
                         History.newItem("main");
                         setGuestMode();
                     }
@@ -181,8 +220,9 @@ public class HeaderPanel extends HorizontalPanel{
 //        });
     }
 
-    public void setGuestMode(){
-        currentUser=null;
+    public void setGuestMode()
+    {
+        currentUser = null;
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);

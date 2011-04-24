@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    
     <session-config>
         <session-timeout>
             30
@@ -29,6 +30,7 @@
         <servlet-class>org.workingonit.gwtbridge.GwtBridgeServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>gwtbridge</servlet-name>
         <url-pattern>*.rpc</url-pattern>
@@ -37,26 +39,28 @@
     <!-- сервлеты с маппингами добавлять сюда!(по умолч вставляет  в разные места - потом трудно разобраться)
      в общем СЛЕДИТЬ! -->
     <servlet>
-        <servlet-name>SessionService</servlet-name>    <servlet-mapping>
-        <servlet-name>UserService</servlet-name>
-        <url-pattern>/qbix.sm.Main/userservice.rpc</url-pattern>
-    </servlet-mapping>
+        <servlet-name>SessionService</servlet-name>
+        <servlet-mapping>
+            <servlet-name>UserService</servlet-name>
+            <url-pattern>/qbix.sm.Main/userservice.rpc</url-pattern>
+        </servlet-mapping>
         <servlet-class>qbix.sm.server.services.SessionServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SessionService</servlet-name>
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
-	
-	<servlet-mapping>
-        <servlet-name>FileAndCategoryService</servlet-name>
-        <url-pattern>/qbix.sm.Main/FCService.rpc</url-pattern>
-    </servlet-mapping>
+    
+
     <servlet>
         <servlet-name>FileAndCategoryService</servlet-name>
         <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
     </servlet>
-
+    <servlet-mapping>
+        <servlet-name>FileAndCategoryService</servlet-name>
+        <url-pattern>/qbix.sm.Main/FCService</url-pattern>
+    </servlet-mapping>
+    
     <!--
         <servlet>
         <servlet-name>UserService</servlet-name>
