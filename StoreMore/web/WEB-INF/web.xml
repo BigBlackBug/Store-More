@@ -33,41 +33,38 @@
         <servlet-name>gwtbridge</servlet-name>
         <url-pattern>*.rpc</url-pattern>
     </servlet-mapping>
-   
     <!-- /GWT Bridge (Spring integration) -->
     <!-- сервлеты с маппингами добавлять сюда!(по умолч вставляет  в разные места - потом трудно разобраться)
      в общем СЛЕДИТЬ! -->
     <servlet>
-        <servlet-name>SessionService</servlet-name>
-        <servlet-mapping>
-            <servlet-name>UserService</servlet-name>
-            <url-pattern>/qbix.sm.Main/userservice.rpc</url-pattern>
-        </servlet-mapping>
+        <servlet-name>SessionService</servlet-name>    <servlet-mapping>
+        <servlet-name>UserService</servlet-name>
+        <url-pattern>/qbix.sm.Main/userservice.rpc</url-pattern>
+    </servlet-mapping>
         <servlet-class>qbix.sm.server.services.SessionServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SessionService</servlet-name>
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
-
-    <servlet-mapping>
+	
+	<servlet-mapping>
         <servlet-name>FileAndCategoryService</servlet-name>
-        <url-pattern>/qbix.sm.Main/services/FCService.rpc</url-pattern>
+        <url-pattern>/qbix.sm.Main/FCService.rpc</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>FileAndCategoryService</servlet-name>
         <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
     </servlet>
 
-    <servlet>
+    <!--
+        <servlet>
         <servlet-name>UserService</servlet-name>
         <servlet-class>qbix.sm.server.services.UserServiceImpl</servlet-class>
     </servlet>
-    <servlet-mapping>
+        <servlet-mapping>
         <servlet-name>UserService</servlet-name>
         <url-pattern>/qbix.sm.Main/userservice</url-pattern>
     </servlet-mapping>
-
-    
-
+    -->
 </web-app>

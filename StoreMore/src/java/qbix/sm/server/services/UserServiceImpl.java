@@ -17,7 +17,7 @@ import qbix.sm.server.dao.UserDao;
  * @author iliax
  */
 
-public class UserServiceImpl extends RemoteServiceServlet implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 

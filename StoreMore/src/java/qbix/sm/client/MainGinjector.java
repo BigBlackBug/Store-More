@@ -2,6 +2,9 @@ package qbix.sm.client;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import qbix.sm.client.presenters.AccountOwnerPagePresenter;
+import qbix.sm.client.presenters.AccountPagePresenter;
+import qbix.sm.client.presenters.MainPagePresenter;
 
 
 /**
@@ -17,5 +20,11 @@ public interface MainGinjector extends Ginjector{
     HeaderPanel getHeaderPanel();
     
     //presenters:
+
+    AccountPagePresenter getAccountPagePresenter();
+
+    AccountOwnerPagePresenter getAccountOwnerPagePresenter();
+
+    MainPagePresenter getMainPagePresenter();
 
 }

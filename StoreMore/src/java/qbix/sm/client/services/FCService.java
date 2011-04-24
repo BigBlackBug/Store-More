@@ -15,8 +15,8 @@ import qbix.sm.client.beans.SmFile;
  *
  * @author BigBlackBug
  */
-@RemoteServiceRelativePath("/services/FCService.rpc")
-@GwtRemoteService("/services/FCService.rpc")
+@RemoteServiceRelativePath("FCService.rpc")
+@GwtRemoteService("FCService.rpc")
 public interface FCService extends RemoteService
 {
     //files

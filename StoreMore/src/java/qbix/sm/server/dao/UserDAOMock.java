@@ -21,7 +21,9 @@ public class UserDAOMock implements UserDao
     }
 
     public LinkedList<User> getAll()
-    { 
+    {
+        users.add(new User(new Long(1), "iliax", "fdsf", "dhghr", "GDF"));
+        users.add(new User(new Long(2), "ili123ax", "fWERdsf", "dWERhghr", "GDWERF"));
         return users;
     }
 
@@ -40,15 +42,22 @@ public class UserDAOMock implements UserDao
 
     public User getByName(String userName)
     {
-        User user = new User();
+        if(userName.equals("iliax"))
+            return new User(new Long(11), "iliax", "123", "123", "123");
 
-        for (User u : users)
-            if (u.getName().equals(userName))
-            {
-                user = u;
-                break;
-            }
-        return user;
+        if(userName.equals("bbb"))
+            return new User(new Long(12), "bbb", "123", "123", "fsdf");
+
+        return null;
+//        User user = new User();
+//
+//        for (User u : users)
+//            if (u.getName().equals(userName))
+//            {
+//                user = u;
+//                break;
+//            }
+//        return user;
     }
 
     public void add(User newUser)
