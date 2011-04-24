@@ -72,14 +72,28 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
           History.fireCurrentHistoryState();
     }
 
+     public void onValueChange(final ValueChangeEvent<String> event) {
+        final  String token=event.getValue();
+        if(token!=null){
+               if("".equals(History.getToken()))
+                    History.newItem("main");
 
-    public void onValueChange(ValueChangeEvent<String> event) {
+            userService.getByName(token, new AbstractAsyncCallBack<User>() {
+                @Override
+                public void handleFailture(Throwable caugh) {}
+                @Override
+                public void handleSuccess(User result) {
+                    targetPageOwner=result;
+                    postOnValueChange(event);
+                }
+            });
+         }
+     }
+
+    public void postOnValueChange(ValueChangeEvent<String> event) {
        final  String token=event.getValue();
 
         if(token!=null){
-           if("".equals(History.getToken()))
-                History.newItem("main");
-
             sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
                 @Override
                 public void handleFailture(Throwable caugh) {
@@ -102,8 +116,8 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
                             aopp.setOwner(userInSession);
                             targetPageOwner=null;
                             currentPresenter=aopp;
-                        }
-                        
+                        }  
+
                     }
                     else {
                         //for page guests:

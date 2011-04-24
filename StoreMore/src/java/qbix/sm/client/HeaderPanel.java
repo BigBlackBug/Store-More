@@ -98,6 +98,7 @@ public class HeaderPanel extends HorizontalPanel{
                                     @Override
                                     public void handleSuccess(Void voidres) {
                                         HeaderPanel.this.setAuthMode(result);
+                                        eventBus.fireEvent(new ShowAccoutPageEvent(result));
                                     }
                                 });
                             }
@@ -145,6 +146,7 @@ public class HeaderPanel extends HorizontalPanel{
 
     public void setAuthMode(User user){
         currentUser=user;
+        logInForm.collapse();
         userNameButton.setText(user.getName());
         userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override
@@ -162,19 +164,19 @@ public class HeaderPanel extends HorizontalPanel{
                     public void handleFailture(Throwable caugh) {}
                     @Override
                     public void handleSuccess(Void result) {
+                        goToAccountPage(currentUser);
                         setGuestMode();
                     }
                 });
             }
         });
-        userSearchField.setValue("");
-        userNameButton.setVisible(true);
-        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
-            @Override
-            public void componentSelected(ButtonEvent ce) {
-               eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
-            }
-        });
+        userNameButton.setEnabled(true);
+//        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+//            @Override
+//            public void componentSelected(ButtonEvent ce) {
+//               eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
+//            }
+//        });
     }
 
     public void setGuestMode(){
@@ -182,7 +184,9 @@ public class HeaderPanel extends HorizontalPanel{
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);
+        logInForm.collapse();
         logOffButton.setVisible(false);
-        userSearchField.setValue("");
+        userNameField.setValue("");
+        userPasswordField.setValue("");
     }
 }

@@ -45,6 +45,9 @@ public class UserDAOMock implements UserDao
         if(userName.equals("iliax"))
             return new User(new Long(11), "iliax", "123", "123", "123");
 
+        if(userName.equals("bbb"))
+            return new User(new Long(12), "bbb", "123", "123", "fsdf");
+
         return null;
 //        User user = new User();
 //
