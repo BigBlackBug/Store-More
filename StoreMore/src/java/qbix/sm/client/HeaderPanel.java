@@ -8,6 +8,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -164,7 +165,8 @@ public class HeaderPanel extends HorizontalPanel{
                     public void handleFailture(Throwable caugh) {}
                     @Override
                     public void handleSuccess(Void result) {
-                        goToAccountPage(currentUser);
+                       /// goToAccountPage(currentUser);
+                        History.newItem("main");
                         setGuestMode();
                     }
                 });

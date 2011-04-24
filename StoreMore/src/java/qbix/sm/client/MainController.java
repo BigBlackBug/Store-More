@@ -75,10 +75,16 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
      public void onValueChange(final ValueChangeEvent<String> event) {
         final  String token=event.getValue();
         if(token!=null){
-               if("".equals(History.getToken())){
-                   History.newItem("main");
-                   return;
-               }
+
+            if("main".equals(token)){
+                postOnValueChange(event);
+                return;
+            }
+
+           if("".equals(token)){
+               History.newItem("main");
+               return;
+           }
 
             userService.getByName(token, new AbstractAsyncCallBack<User>() {
                 @Override
@@ -129,7 +135,6 @@ public class MainController implements  ValueChangeHandler<String>, Presenter{
                             targetPageOwner=null;
                             currentPresenter=app;
                         }
-                        
                     }
                     else {
                         //for page guests:
