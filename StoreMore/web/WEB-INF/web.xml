@@ -80,7 +80,7 @@
 
  <context-param>
  <param-name>slowUploads</param-name>
- <param-value>12</param-value>
+ <param-value>10</param-value>
  </context-param>
  <!-- /for UPLOAD -->
     
