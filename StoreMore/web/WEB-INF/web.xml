@@ -51,8 +51,6 @@
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
 
-    
-
     <servlet>
         <servlet-name>FileAndCategoryService</servlet-name>
         <servlet-class>qbix.sm.server.services.FCServiceImpl</servlet-class>
@@ -61,5 +59,29 @@
         <servlet-name>FileAndCategoryService</servlet-name>
         <url-pattern>/qbix.sm.Main/FCService</url-pattern>
     </servlet-mapping>
+
+
+ <!-- for UPLOAD -->
+<servlet>
+ <servlet-name>fileUploadServlet</servlet-name>
+ <servlet-class>qbix.sm.server.services.FileUploadServlet</servlet-class>
+ </servlet>
+
+ <servlet-mapping>
+ <servlet-name>fileUploadServlet</servlet-name>
+ <url-pattern>*.fileUpload</url-pattern>
+ </servlet-mapping>
+
+ <!-- max size of the upload request -->
+ <context-param>
+ <param-name>maxSize</param-name>
+ <param-value>262144000</param-value>
+ </context-param>
+
+ <context-param>
+ <param-name>slowUploads</param-name>
+ <param-value>12</param-value>
+ </context-param>
+ <!-- /for UPLOAD -->
     
 </web-app>

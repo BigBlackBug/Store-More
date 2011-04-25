@@ -44,6 +44,9 @@ public class HeaderPanel extends HorizontalPanel{
 
     private SessionServiceAsync sessionService = GWT.create(SessionService.class);
 
+    FormPanel uploadForm=new FormPanel();
+    UploaderPanel uploaderPanel=new UploaderPanel();
+
 
     @Inject
     public HeaderPanel(EventBus eventBus, UserServiceAsync userService){
@@ -63,6 +66,13 @@ public class HeaderPanel extends HorizontalPanel{
 
         add(logOffButton);
 
+        uploadForm.add(uploaderPanel);
+        uploadForm.setCollapsible(true);
+        uploadForm.setHeading("UploadForm");
+        //uploadForm.setSize("300", "300");
+        uploadForm.setSize(250, 250);
+        add(uploadForm);
+
         sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
             @Override
             public void handleFailture(Throwable caugh){}
@@ -74,6 +84,8 @@ public class HeaderPanel extends HorizontalPanel{
                     setGuestMode();
             }
         });
+
+        
     }
 
     private void goToAccountPage(User user){
@@ -146,6 +158,8 @@ public class HeaderPanel extends HorizontalPanel{
     public void setAuthMode(User user){
         currentUser=user;
         logInForm.collapse();
+        uploadForm.setVisible(true);
+        uploadForm.collapse();
         userNameButton.setText(user.getName());
         userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
@@ -181,6 +195,7 @@ public class HeaderPanel extends HorizontalPanel{
 
     public void setGuestMode(){
         currentUser = null;
+        uploadForm.setVisible(false);
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);
