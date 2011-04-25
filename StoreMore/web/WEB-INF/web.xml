@@ -60,6 +60,18 @@
         <servlet-name>FileAndCategoryService</servlet-name>
         <url-pattern>/qbix.sm.Main/FCService</url-pattern>
     </servlet-mapping>
+
+    
+
+    <servlet>
+        <servlet-name>fileDownloadServlet</servlet-name>
+        <servlet-class>uploadingtest.server.DownloadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>fileDownloadServlet</servlet-name>
+        <url-pattern>/download</url-pattern>
+    </servlet-mapping>
     
     <!--
         <servlet>
