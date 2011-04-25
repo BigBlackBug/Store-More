@@ -20,7 +20,7 @@ public class MainGinjectorModule extends AbstractGinModule{
         //base
             bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class); //синглтон!
             bind(UserServiceAsync.class).in(Singleton.class);
-            //bind(FCServiceAsync.class).in(Singleton.class);
+            bind(FCServiceAsync.class).in(Singleton.class);
         //
 
         bindViewsToPresenters();

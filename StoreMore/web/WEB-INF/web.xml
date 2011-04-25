@@ -64,7 +64,7 @@
 
     <servlet>
         <servlet-name>fileDownloadServlet</servlet-name>
-        <servlet-class>uploadingtest.server.DownloadServlet</servlet-class>
+        <servlet-class>qbix.sm.server.services.DownloadServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -74,26 +74,26 @@
 
 
  <!-- for UPLOAD -->
-<servlet>
- <servlet-name>fileUploadServlet</servlet-name>
- <servlet-class>qbix.sm.server.services.FileUploadServlet</servlet-class>
- </servlet>
+    <servlet>
+        <servlet-name>fileUploadServlet</servlet-name>
+        <servlet-class>qbix.sm.server.services.FileUploadServlet</servlet-class>
+    </servlet>
 
- <servlet-mapping>
- <servlet-name>fileUploadServlet</servlet-name>
- <url-pattern>*.fileUpload</url-pattern>
- </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fileUploadServlet</servlet-name>
+        <url-pattern>*.fileUpload</url-pattern>
+    </servlet-mapping>
 
- <!-- max size of the upload request -->
- <context-param>
- <param-name>maxSize</param-name>
- <param-value>19262144000</param-value>
- </context-param>
+ <!-- max size of the upload request 2GB-->
+    <context-param>
+        <param-name>maxSize</param-name>
+        <param-value>2000000000</param-value>
+    </context-param>
 
- <context-param>
- <param-name>slowUploads</param-name>
- <param-value>10</param-value>
- </context-param>
+    <context-param>
+        <param-name>slowUploads</param-name>
+        <param-value>5</param-value>
+    </context-param>
  <!-- /for UPLOAD -->
 
     

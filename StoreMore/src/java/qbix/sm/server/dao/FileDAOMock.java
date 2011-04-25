@@ -32,7 +32,7 @@ public class FileDAOMock implements FileDao
     {
         // UserDao userDao=new UserDAOImpl();
         //User user=userDao.getByName(userName);
-        LinkedList<SmFile> q=new LinkedList<SmFile>(); q.add(new SmFile(1L,null, "real","path", 123456L, null));
+        LinkedList<SmFile> q=new LinkedList<SmFile>(); q.add(new SmFile(1L,null, "realname","C://123.exe", 123456L, null));
         return q;
         /*LinkedList<SmCategory> cats = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
        
