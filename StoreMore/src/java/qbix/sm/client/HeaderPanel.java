@@ -27,8 +27,7 @@ import qbix.sm.client.services.UserServiceAsync;
  *
  * @author iliax
  */
-public class HeaderPanel extends HorizontalPanel
-{
+public class HeaderPanel extends HorizontalPanel{
     Button userNameButton = new Button();
     TextField<String> userSearchField = new TextField<String>();
     Button userSeachButton = new Button("search!");
@@ -47,8 +46,7 @@ public class HeaderPanel extends HorizontalPanel
 
 
     @Inject
-    public HeaderPanel(EventBus eventBus, UserServiceAsync userService)
-    {
+    public HeaderPanel(EventBus eventBus, UserServiceAsync userService){
         this.eventBus = eventBus;
         this.userService = userService;
 
@@ -65,17 +63,11 @@ public class HeaderPanel extends HorizontalPanel
 
         add(logOffButton);
 
-
-        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>()
-        {
+        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
             @Override
-            public void handleFailture(Throwable caugh)
-            {
-            }
-
+            public void handleFailture(Throwable caugh){}
             @Override
-            public void handleSuccess(User result)
-            {
+            public void handleSuccess(User result){
                 if (result != null)
                     setAuthMode(result);
                 else
@@ -84,8 +76,7 @@ public class HeaderPanel extends HorizontalPanel
         });
     }
 
-    private void goToAccountPage(User user)
-    {
+    private void goToAccountPage(User user){
         eventBus.fireEvent(new ShowAccoutPageEvent(user));
     }
 
@@ -156,29 +147,20 @@ public class HeaderPanel extends HorizontalPanel
         currentUser=user;
         logInForm.collapse();
         userNameButton.setText(user.getName());
-        userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>()
-        {
+        userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
-            public void componentSelected(ButtonEvent ce)
-            {
+            public void componentSelected(ButtonEvent ce){
                 eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
             }
         });
         logInForm.setVisible(false);
         logOffButton.setVisible(true);
-        logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>()
-        {
+        logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
-            public void componentSelected(ButtonEvent ce)
-            {
-
-                sessionService.invalidate(new AbstractAsyncCallBack<Void>()
-                {
+            public void componentSelected(ButtonEvent ce){
+                sessionService.invalidate(new AbstractAsyncCallBack<Void>(){
                     @Override
-                    public void handleFailture(Throwable caugh)
-                    {
-                    }
-
+                    public void handleFailture(Throwable caugh){}
                     @Override
                     public void handleSuccess(Void result) {
                        /// goToAccountPage(currentUser);
@@ -197,8 +179,7 @@ public class HeaderPanel extends HorizontalPanel
 //        });
     }
 
-    public void setGuestMode()
-    {
+    public void setGuestMode(){
         currentUser = null;
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
