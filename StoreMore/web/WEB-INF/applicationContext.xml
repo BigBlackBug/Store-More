@@ -9,13 +9,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-<!-- PREFERENSES -->
+<!-- PREFERENCES -->
     <!-- for gwt bridge (Spring integration) -->
         <bean class="org.workingonit.gwtbridge.GwtServicesRegistrar"/>
     <!-- / -->
 
     <aop:aspectj-autoproxy/>
-<!-- /PREFERENSES -->
+<!-- /PREFERENCES -->
 
 <!-- DAOs -->
 
@@ -30,6 +30,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 <!-- Services -->
     <bean name="userservice" class="qbix.sm.server.services.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
+    </bean>
+	 
+    <bean name="FCService" class="qbix.sm.server.services.FCServiceImpl">
+        <property name="fileDAO" ref="fileDao"/>
+        <property name="categoryDAO" ref="categoryDao"/>
     </bean>
 <!-- /Services -->
 

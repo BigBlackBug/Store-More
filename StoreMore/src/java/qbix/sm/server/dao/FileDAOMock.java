@@ -19,10 +19,12 @@ public class FileDAOMock implements FileDao
 
     public FileDAOMock()
     {
+       
     }
 
     public LinkedList<SmFile> getAll()
     {
+        
         return files;
     }
 
@@ -30,7 +32,9 @@ public class FileDAOMock implements FileDao
     {
         // UserDao userDao=new UserDAOImpl();
         //User user=userDao.getByName(userName);
-        LinkedList<SmCategory> cats = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
+        LinkedList<SmFile> q=new LinkedList<SmFile>(); q.add(new SmFile(1L,null, "real","path", 123456L, null));
+        return q;
+        /*LinkedList<SmCategory> cats = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
        
         for (SmCategory c : CategoryDAOMock.getcats())
             if (c.getUser().getName().equals(userName))
@@ -42,7 +46,7 @@ public class FileDAOMock implements FileDao
         for (SmCategory c : cats)
             files1.addAll(c.getFiles());
 
-        return files1;
+        return files1;*/
     }
 
     public LinkedList<SmFile> getAllFilesOfUserById(Long id)
