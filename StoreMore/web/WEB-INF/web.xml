@@ -50,7 +50,6 @@
         <servlet-name>SessionService</servlet-name>
         <url-pattern>/qbix.sm.Main/services/sessionservice</url-pattern>
     </servlet-mapping>
-    
 
     <servlet>
         <servlet-name>FileAndCategoryService</servlet-name>
@@ -72,15 +71,30 @@
         <servlet-name>fileDownloadServlet</servlet-name>
         <url-pattern>/download</url-pattern>
     </servlet-mapping>
+
+
+ <!-- for UPLOAD -->
+<servlet>
+ <servlet-name>fileUploadServlet</servlet-name>
+ <servlet-class>qbix.sm.server.services.FileUploadServlet</servlet-class>
+ </servlet>
+
+ <servlet-mapping>
+ <servlet-name>fileUploadServlet</servlet-name>
+ <url-pattern>*.fileUpload</url-pattern>
+ </servlet-mapping>
+
+ <!-- max size of the upload request -->
+ <context-param>
+ <param-name>maxSize</param-name>
+ <param-value>19262144000</param-value>
+ </context-param>
+
+ <context-param>
+ <param-name>slowUploads</param-name>
+ <param-value>10</param-value>
+ </context-param>
+ <!-- /for UPLOAD -->
+
     
-    <!--
-        <servlet>
-        <servlet-name>UserService</servlet-name>
-        <servlet-class>qbix.sm.server.services.UserServiceImpl</servlet-class>
-    </servlet>
-        <servlet-mapping>
-        <servlet-name>UserService</servlet-name>
-        <url-pattern>/qbix.sm.Main/userservice</url-pattern>
-    </servlet-mapping>
-    -->
 </web-app>

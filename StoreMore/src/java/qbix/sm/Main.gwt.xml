@@ -22,4 +22,8 @@
   <!-- For injection -->
   <inherits name="com.google.gwt.inject.Inject"/>
 
+  <!-- for upload -->
+<stylesheet src="Upload.css"/>
+<inherits name="gwtupload.GWTUpload"/>
+
 </module>
