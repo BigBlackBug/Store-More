@@ -1,21 +1,13 @@
 package qbix.sm.client;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import qbix.sm.client.beans.User;
-import qbix.sm.client.services.SessionService;
-import qbix.sm.client.services.SessionServiceAsync;
-import qbix.sm.client.services.UserServiceAsync;
 
 
 /**
@@ -38,6 +30,7 @@ public class MainEntryPoint implements EntryPoint {
 
         RootPanel.get().add(verticalPanel);
 
+       
         MainController mainController=GINJECTOR.getMainController();
         mainController.go(horizontalPanel);
     }

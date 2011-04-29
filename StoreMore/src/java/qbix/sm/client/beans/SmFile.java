@@ -1,6 +1,8 @@
 package qbix.sm.client.beans;
 
+import com.extjs.gxt.ui.client.data.BeanModelTag;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -8,7 +10,7 @@ import java.util.Date;
  *
  * @author iliax
  */
-public class SmFile implements  IsSerializable{
+public class SmFile implements  IsSerializable,BeanModelTag{
 
     private Long fileId;
 

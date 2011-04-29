@@ -1,5 +1,6 @@
 package qbix.sm.client.beans;
 
+import com.extjs.gxt.ui.client.data.BeanModelTag;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,7 +9,7 @@ import java.util.LinkedList;
  *
  * @author iliax
  */
-public class SmCategory implements IsSerializable{
+public class SmCategory implements IsSerializable,BeanModelTag{
 
     private Long categoryId;
 

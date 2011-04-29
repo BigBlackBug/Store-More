@@ -1,5 +1,6 @@
 package qbix.sm.client.beans;
 
+import com.extjs.gxt.ui.client.data.BeanModelTag;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -8,7 +9,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 
 //потом добавим аннотации хибера
-public class User implements IsSerializable {
+public class User implements IsSerializable,BeanModelTag {
 
    private Long userId;
 

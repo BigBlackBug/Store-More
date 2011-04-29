@@ -1,5 +1,6 @@
 package qbix.sm.client;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -59,6 +60,7 @@ public class MainController implements ValueChangeHandler<String>, Presenter{
                 History.newItem(targetPageOwner.getName());
             }
         });
+
     }
 
     public void go(final HasWidgets container){
