@@ -9,10 +9,16 @@ import gwtupload.server.exceptions.UploadActionException;
 import java.io.File;
 
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import qbix.sm.client.services.FCService;
 
 /**
  *
@@ -22,6 +28,18 @@ import org.apache.commons.fileupload.FileItem;
 public class FileUploadServlet extends UploadAction {
 
 	private static final long serialVersionUID = 1L;
+
+        FCService fCService=null;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+
+        ApplicationContext context = WebApplicationContextUtils.
+            getRequiredWebApplicationContext(getServletContext());
+        fCService=(FCService) context.getBean("FCService");
+    }
+
 
     @Override
 	public String executeAction(HttpServletRequest request,

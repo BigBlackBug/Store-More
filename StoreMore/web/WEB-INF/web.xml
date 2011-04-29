@@ -9,10 +9,6 @@
     <welcome-file-list>
         <welcome-file>baseGwtPage.html</welcome-file>
     </welcome-file-list>
-    <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/ErrorPage.html</location>
-    </error-page>
     <!-- FOR SPRING (basic ContextLoaderListener) -->
     <listener>
         <listener-class>
@@ -83,5 +79,10 @@
  <param-value>12</param-value>
  </context-param>
  <!-- /for UPLOAD -->
-    
+
+
+        <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/ErrorPage.html</location>
+    </error-page>
 </web-app>

@@ -23,7 +23,7 @@ public class SessionServiceImpl extends RemoteServiceServlet implements SessionS
     }
 
     public void invalidate() {
-            //getThreadLocalRequest().getSession().invalidate();
+           // getThreadLocalRequest().getSession().invalidate();
             getThreadLocalRequest().getSession().removeAttribute("user");
     }
 

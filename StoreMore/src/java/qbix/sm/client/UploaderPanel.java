@@ -4,7 +4,7 @@
  */
 
 package qbix.sm.client;
-
+import com.google.gwt.event.dom.client.ClickEvent;
 import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
@@ -35,12 +35,16 @@ public class UploaderPanel extends LayoutContainer {
 
 	public static final float SIZE = 130;
 
+        private MultiUploader uploader;
+
+        private boolean isActive=false;
+
 	@Override
 	protected void onRender(Element parent, int index) {
             super.onRender(parent, index);
 
             setLayout(new FitLayout());
-
+            
             final VerticalPanel uploaderPanel = new VerticalPanel();
 
             uploaderPanel.setScrollMode(Scroll.AUTO);
@@ -49,15 +53,16 @@ public class UploaderPanel extends LayoutContainer {
 
             uploaderPanel.setHorizontalAlign(HorizontalAlignment.RIGHT);
 
-            MultiUploader uploader = new MultiUploader(FileInputType.LABEL);
+            uploader = new MultiUploader(FileInputType.LABEL);
 
             uploader.setAvoidRepeatFiles(true);
-
+            
             uploader.setServletPath("uploader.fileUpload");
+            
             uploader.addOnStartUploadHandler(new IUploader.OnStartUploaderHandler() {
-
-                public void onStart(IUploader uploader) {
-                    Info.display("Upload started", "Plase don't change your url, while uploading is running...");
+                public void onStart(final IUploader uploader) {
+                    Info.display("Upload started", "Please don't change your url, while uploading is running...");
+                    isActive=true;
                 }
              });
             uploader.addOnFinishUploadHandler(new OnFinishUploaderHandler() {
@@ -82,7 +87,9 @@ public class UploaderPanel extends LayoutContainer {
                                  //uploader.reset();
                         } else 
                             Window.alert("Uploader Status: \n" + uploader.getStatus());
+                        isActive=false;
                     }
+
             });
 
             uploaderPanel.add(uploader);
@@ -100,4 +107,11 @@ public class UploaderPanel extends LayoutContainer {
             add(uploaderPanel);
     }
 
+        public void cancel(){
+            //
+        }
+
+        public boolean isActive(){
+            return isActive;
+        }
 }

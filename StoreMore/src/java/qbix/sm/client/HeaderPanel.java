@@ -68,8 +68,8 @@ public class HeaderPanel extends HorizontalPanel{
 
         uploadForm.add(uploaderPanel);
         uploadForm.setCollapsible(true);
+        uploadForm.setTitleCollapse(true);
         uploadForm.setHeading("UploadForm");
-        //uploadForm.setSize("300", "300");
         uploadForm.setSize(250, 250);
         add(uploadForm);
 
@@ -178,6 +178,7 @@ public class HeaderPanel extends HorizontalPanel{
                     @Override
                     public void handleSuccess(Void result) {
                        /// goToAccountPage(currentUser);
+                        ///uploaderPanel.cancel();
                         History.newItem("main");
                         setGuestMode();
                     }
@@ -194,8 +195,10 @@ public class HeaderPanel extends HorizontalPanel{
     }
 
     public void setGuestMode(){
+        if(!uploaderPanel.isActive())
+            uploadForm.setVisible(false);
+        uploadForm.collapse();
         currentUser = null;
-        uploadForm.setVisible(false);
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);
