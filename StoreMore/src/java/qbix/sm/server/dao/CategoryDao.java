@@ -23,6 +23,9 @@ public interface CategoryDao {
     //категория уже имеет ссылки на родителя и юзера!(все обертки делаются в сервисе!)
     void add(SmCategory newCategory);
 
+    //для удаления используем этот метод
+    void delete(SmCategory categoryToDelete);
+
     void deleteById(Long categoryId);
 
     void deleteAllCategoriesOfUserById(Long userId);

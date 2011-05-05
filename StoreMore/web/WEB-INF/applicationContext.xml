@@ -39,6 +39,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 <!-- /Services -->
 
 <!-- Loggers -->
- 
-
+    <bean name="userDaoLogger" class="qbix.sm.server.aspectj.loggers.UserDaoLogger"/>
+    <bean name="categoryDaoLogger" class="qbix.sm.server.aspectj.loggers.CategoryDaoLogger"/>
+    <bean name="fileDaoLogger" class="qbix.sm.server.aspectj.loggers.FileDaoLogger"/>
 </beans>

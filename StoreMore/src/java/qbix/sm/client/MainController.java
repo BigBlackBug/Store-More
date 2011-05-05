@@ -84,7 +84,11 @@ public class MainController implements ValueChangeHandler<String>, Presenter{
                 return;
             }
             
-
+            if (targetPageOwner!=null){
+                postOnValueChange(event);
+                return;
+            }
+            
             userService.getByName(token, new AbstractAsyncCallBack<User>(){
                 @Override
                 public void handleFailture(Throwable caugh){}
