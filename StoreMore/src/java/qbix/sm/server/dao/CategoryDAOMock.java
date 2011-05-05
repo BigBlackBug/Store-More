@@ -4,6 +4,7 @@
  */
 package qbix.sm.server.dao;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import qbix.sm.client.beans.SmCategory;
 
@@ -26,7 +27,21 @@ public class CategoryDAOMock implements CategoryDao
 
     public LinkedList<SmCategory> getAll()
     {
-        return categories;
+        Long id=1L;
+        //LinkedList<SmCategory> ll=new LinkedList<SmCategory>();
+        /// ll.add(new SmCategory(1L, null, "cat1", null, "woohoo"));
+        // ll.add(new SmCategory(2L, null, "cat2", null, "woohoo"));
+        //  return ll;
+        //return categories;
+        SmCategory[] cats = new SmCategory[]
+        {
+               new SmCategory(id++, "name","pass","desc", new SmCategory[]{
+                   new SmCategory(id++, "nameIn","passIn","descIn")
+               }),
+               new SmCategory(id++, "name1","pass1","desc1"),
+               new SmCategory(id++, "name1","pass1","desc1")
+        };
+        return new LinkedList<SmCategory>(Arrays.asList(cats));
     }
 
     public SmCategory getById(Long categoryId)
@@ -46,7 +61,7 @@ public class CategoryDAOMock implements CategoryDao
     public LinkedList<SmCategory> getAllCategoriesOfUserById(Long userId)
     {
         LinkedList<SmCategory> result = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
-       
+
         for (SmCategory c : categories)
             if (c.getUser().getUserId() == userId)
                 result.add(c);
