@@ -1,11 +1,9 @@
 package qbix.sm.server.aspectj.loggers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import qbix.sm.client.beans.User;
 
 /**
