@@ -24,4 +24,7 @@ public interface  FileDao {
     void add(SmFile newFile);
 
     void deleteById(Long fileId);
+
+    //используем этот для удаления
+    void delete(SmFile fileToDelete);
 }
