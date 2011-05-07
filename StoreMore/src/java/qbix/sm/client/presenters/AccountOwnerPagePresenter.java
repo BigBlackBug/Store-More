@@ -2,6 +2,7 @@ package qbix.sm.client.presenters;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.BeanModelFactory;
 import com.extjs.gxt.ui.client.data.BeanModelLookup;
@@ -10,13 +11,16 @@ import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.data.TreeLoader;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.form.ListField;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -38,7 +42,7 @@ import java.util.List;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
-import qbix.sm.client.events.AbstractAsyncCallBack;
+import qbix.sm.client.events.AbstractAsyncCallback;
 import qbix.sm.client.services.FCServiceAsync;
 
 /**
@@ -47,112 +51,81 @@ import qbix.sm.client.services.FCServiceAsync;
  */
 public class AccountOwnerPagePresenter implements Presenter
 {
-    RpcProxy<LinkedList<SmFile>> fileProxy;
-    //RpcProxy<LinkedList<SmCategory>> catProxy;
-    ListStore<BeanModel> fileStore;
+    // RpcProxy<LinkedList<SmFile>> fileProxy;
+    TreeStore<ModelData> treeStore = new TreeStore<ModelData>();
+    SmCategory root = new SmCategory();
+    ListStore<BeanModel> fileStore = new ListStore<BeanModel>();
     BeanModelReader reader = new BeanModelReader();
     Grid<BeanModel> grid;
+    TreePanel<ModelData> treePanel;
     ColumnModel cm;
     //ListField<BeanModel> catList;
     User pageOwner;
     FCServiceAsync fcService;
-    ListLoader<ListLoadResult<BeanModel>> loader;
+    // ListLoader<ListLoadResult<BeanModel>> loader;
 
     @Inject
     public AccountOwnerPagePresenter(FCServiceAsync fcService)
     {
         this.fcService = fcService;
+
+
     }
 
     public void go(final HasWidgets container)
     {
+
         container.clear();
         container.add(new Label(pageOwner.getName() + "'s acc OWNER presenter"));
 
         //Каты
         /////////////////////////////////////////////////////
-        /*catList = new ListField<BeanModel>();
-        catProxy = new RpcProxy<LinkedList<SmCategory>>()
+
+
+        fcService.getAllCategories(new AsyncCallback<LinkedList<SmCategory>>()
         {
-        @Override
-        protected void load(Object loadConfig, AsyncCallback<LinkedList<SmCategory>> callback)
-        {
-        fcService.getAllCategories(callback);
-        }
-        };
-
-
-        loader = new BaseListLoader<ListLoadResult<BeanModel>>(catProxy, reader);
-        ListStore<BeanModel> catStore = new ListStore<BeanModel>(loader);
-        loader.load();
-
-        catList.setStore(catStore);
-        catList.setDisplayField("name");
-
-        container.add(catList);
-
-
-        catList.addSelectionChangedListener(new SelectionChangedListener<BeanModel>()
-        {
-        @Override
-        public void selectionChanged(SelectionChangedEvent<BeanModel> se)
-        {
-        final BeanModelFactory beanModelFactory = BeanModelLookup.get().getFactory(SmFile.class);
-        final Long catId = ((SmCategory) se.getSelectedItem().getBean()).getCategoryId();
-        fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
-        {
-        @Override
-        public void handleFailture(Throwable caugh)
-        {
-        throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void handleSuccess(LinkedList<SmFile> result)
-        {
-        fileStore.removeAll();
-        //fileStore.
-        fileStore.add(beanModelFactory.createModel(result));
-        }
-        });
-        }
-        });*/
-
-
-        //это всё будет тащиться из рпс
-        final SmCategory root = new SmCategory();
-        Long id = 1L;
-        SmCategory[] cats = new SmCategory[]
-        {
-            new SmCategory(id++, "name", "pass", "desc", new SmCategory[]
+            @Override
+            public void onFailure(Throwable caught)
             {
-                new SmCategory(id++, "nameIn", "passIn", "descIn")
-            }),
-            new SmCategory(id++, "name1", "pass1", "desc1"),
-            new SmCategory(id++, "name2", "pass1", "desc1")
-        };
-        for (int i = 0; i < cats.length; i++)
-            root.add((SmCategory) cats[i]);
+                Window.alert("error");
+            }
+
+            @Override
+            public void onSuccess(LinkedList<SmCategory> result)
+            {
+                if (root.getChildCount() != 0)
+                    root.removeAll();
+                for (SmCategory cat : result)
+                    if (cat.getParent() == null)
+                        root.add(cat);
+                if (treeStore.getChildCount() != 0)
+                    treeStore.removeAll();
+                treeStore.add(root.getChildren(), true);
+            }
+        });
+
+        treeStore.add(root.getChildren(), true);
+
+        treePanel = new TreePanel<ModelData>(treeStore);
+       // treePanel.expandAll();
+        treePanel.setDisplayProperty("name");
+        treePanel.setWidth(150);
+        treePanel.setAutoExpand(true);
 
 
-        TreeStore<ModelData> store = new TreeStore<ModelData>();
-        store.add(root.getChildren(), true);
+        treePanel.getStyle().setLeafIcon(treePanel.getStyle().getNodeCloseIcon());
 
-        final TreePanel<ModelData> tree = new TreePanel<ModelData>(store);
-        tree.setDisplayProperty("name");
-        tree.setWidth(250);
-
-        tree.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>()
+        treePanel.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>()
         {
             public void handleEvent(TreePanelEvent<ModelData> be)
             {
                 final BeanModelFactory beanModelFactory = BeanModelLookup.get().getFactory(SmFile.class);
                 final Long catId = ((Long) be.getItem().get("categoryId"));
 
-                fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
                 {
                     @Override
-                    public void handleFailture(Throwable caugh)
+                    public void handleFailure(Throwable caugh)
                     {
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
@@ -169,28 +142,7 @@ public class AccountOwnerPagePresenter implements Presenter
 
             ;
         });
-
-        container.add(tree);
-
-
-
-
-
-        //Файлы
-        ///////////////////////////////////////////////////////
-        //init
-        fileProxy = new RpcProxy<LinkedList<SmFile>>()
-        {
-            @Override
-            protected void load(Object loadConfig, AsyncCallback<LinkedList<SmFile>> callback)
-            {
-                fcService.getAllFilesFromCategory(1L, callback);
-            }
-        };
-
-        loader = new BaseListLoader<ListLoadResult<BeanModel>>(fileProxy, reader);
-        fileStore = new ListStore<BeanModel>(loader);
-        loader.load();
+        container.add(treePanel);
 
 
         //Табла
@@ -222,7 +174,7 @@ public class AccountOwnerPagePresenter implements Presenter
 
         column = new ColumnConfig("uploadDate", "uploading date", 100);
 
-        column.setDateTimeFormat(DateTimeFormat.getFormat("dd MMMM yyyy H:m::s"));
+        column.setDateTimeFormat(DateTimeFormat.getFormat("dd MMMM yyyy H:mm"));
         column.setAlignment(HorizontalAlignment.LEFT);
 
         column.setWidth(300);
@@ -244,8 +196,6 @@ public class AccountOwnerPagePresenter implements Presenter
         cp.setSize(700, 300);
         cp.add(grid);
         container.add(cp);
-
-
 
 
     }

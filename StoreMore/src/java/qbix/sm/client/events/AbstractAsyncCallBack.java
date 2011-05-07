@@ -1,4 +1,15 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package qbix.sm.client.events;
+
+/**
+ *
+ * @author BigBlackBug
+ */
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -8,27 +19,27 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author iliax
  */
 
-public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
-    
-    protected String FAILTURE_MESSAGE="RPC Callback Failture LOG";
+public abstract class  AbstractAsyncCallback<T> implements  AsyncCallback<T> {
+
+    protected String FAILURE_MESSAGE="RPC Callback Failture LOG";
 
     protected String SUCCESS_MESSAGE="RPC Callback SUCCESS LOG";
 
     //static final Logger log=Logger.getLogger("AbstractAsyncCallBackLogger");
 
-    public AbstractAsyncCallBack() {
+    public AbstractAsyncCallback() {
         setLogMessages();
     }
 
-    public AbstractAsyncCallBack(String successLogMessage, String failtureLogMessage) {
+    public AbstractAsyncCallback(String successLogMessage, String failureLogMessage) {
         SUCCESS_MESSAGE=successLogMessage;
-        FAILTURE_MESSAGE=failtureLogMessage;
+        FAILURE_MESSAGE=failureLogMessage;
     }
 
     //гостовые методы
     public void onFailure(Throwable caught) {
-        logFailture(caught);
-        handleFailture(caught);
+        logFailure(caught);
+        handleFailure(caught);
     }
 
     public void onSuccess(T result) {
@@ -38,8 +49,8 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
     //
 
     //логирование
-    protected void logFailture(Throwable caught){
-        GWT.log(FAILTURE_MESSAGE, caught);
+    protected void logFailure(Throwable caught){
+        GWT.log(FAILURE_MESSAGE, caught);
         //log.severe(FAILTURE_MESSAGE);
     }
 
@@ -49,8 +60,8 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
     }
     //
 
-    public void setOnFailtureMessage(String message){
-        FAILTURE_MESSAGE=message;
+    public void setOnFailureMessage(String message){
+        FAILURE_MESSAGE=message;
     }
 
     public void setOnSuccessMessage(String message){
@@ -62,7 +73,7 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
     }
 
     //переопределяемые методы
-    public abstract void handleFailture(Throwable caugh);
+    public abstract void handleFailure(Throwable caught);
 
     public abstract void handleSuccess(T result);
 

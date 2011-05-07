@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import java.util.LinkedList;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
-import qbix.sm.client.events.AbstractAsyncCallBack;
+import qbix.sm.client.events.AbstractAsyncCallback;
 import qbix.sm.client.events.ShowAccoutPageEvent;
 import qbix.sm.client.services.FCService;
 import qbix.sm.client.services.FCServiceAsync;
@@ -73,9 +73,9 @@ public class HeaderPanel extends HorizontalPanel{
         uploadForm.setSize(250, 250);
         add(uploadForm);
 
-        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
+        sessionService.getUserFromSession(new AbstractAsyncCallback<User>() {
             @Override
-            public void handleFailture(Throwable caugh){}
+            public void handleFailure(Throwable caugh){}
             @Override
             public void handleSuccess(User result){
                 if (result != null)
@@ -96,16 +96,16 @@ public class HeaderPanel extends HorizontalPanel{
         logInButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallback<User>() {
                     @Override
-                    public void handleFailture(Throwable caugh) {}
+                    public void handleFailure(Throwable caugh) {}
                     @Override
                     public void handleSuccess(final User result) {
                         if(result!=null)
                             if(result.getPassword().equals(userPasswordField.getValue())==true){
-                                sessionService.addUserToSession(result, new AbstractAsyncCallBack<Void>() {
+                                sessionService.addUserToSession(result, new AbstractAsyncCallback<Void>() {
                                     @Override
-                                    public void handleFailture(Throwable caugh) {}
+                                    public void handleFailure(Throwable caugh) {}
                                     @Override
                                     public void handleSuccess(Void voidres) {
                                         HeaderPanel.this.setAuthMode(result);
@@ -140,9 +140,9 @@ public class HeaderPanel extends HorizontalPanel{
         userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallBack<User>() {
+                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallback<User>() {
                     @Override
-                    public void handleFailture(Throwable caugh) {}
+                    public void handleFailure(Throwable caugh) {}
                     @Override
                     public void handleSuccess(User result) {
                         if(result!=null)
@@ -172,9 +172,9 @@ public class HeaderPanel extends HorizontalPanel{
         logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(ButtonEvent ce){
-                sessionService.invalidate(new AbstractAsyncCallBack<Void>(){
+                sessionService.invalidate(new AbstractAsyncCallback<Void>(){
                     @Override
-                    public void handleFailture(Throwable caugh){}
+                    public void handleFailure(Throwable caugh){}
                     @Override
                     public void handleSuccess(Void result) {
                        /// goToAccountPage(currentUser);

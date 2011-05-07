@@ -27,21 +27,33 @@ public class CategoryDAOMock implements CategoryDao
 
     public LinkedList<SmCategory> getAll()
     {
-        Long id=1L;
-        //LinkedList<SmCategory> ll=new LinkedList<SmCategory>();
-        /// ll.add(new SmCategory(1L, null, "cat1", null, "woohoo"));
-        // ll.add(new SmCategory(2L, null, "cat2", null, "woohoo"));
-        //  return ll;
-        //return categories;
-        SmCategory[] cats = new SmCategory[]
-        {
-               new SmCategory(id++, "name","pass","desc", new SmCategory[]{
-                   new SmCategory(id++, "nameIn","passIn","descIn")
-               }),
-               new SmCategory(id++, "name1","pass1","desc1"),
-               new SmCategory(id++, "name1","pass1","desc1")
-        };
-        return new LinkedList<SmCategory>(Arrays.asList(cats));
+      
+      Long id = 1L;
+        SmCategory cat1 = new SmCategory(id++, "nameRoot", "pass", "desc1");
+        cat1.add(new SmCategory(id++, "nameIn", "passIn", "descIn"));
+        SmCategory cat2 = new SmCategory(id++, "name11111", "pass1", "desc1");
+        SmCategory cat3 = new SmCategory(id++, "nameQ1", "pass1", "desc1");
+        SmCategory cat4 = new SmCategory(id++, "nameQ2", "pass1", "desc1");
+
+        SmCategory cat5 = new SmCategory(id++, "t2y", "pass1", "desc1");
+
+        SmCategory cat6 =
+                new SmCategory(id++, "nameQ3", "pass1", "desc1",
+                new SmCategory[]
+                {
+                    new SmCategory(id++, "qw", "pass1", "desc1"),
+                    new SmCategory(id++, "er", "pass1", "desc1"),
+                    new SmCategory(id++, "ty", "pass1", "desc1")
+                });
+
+        cat4.add(cat5);
+        //cat5.setParent(cat4);
+        cat4.add(cat6); cat3.add(cat4);
+
+        LinkedList<SmCategory> cats = new LinkedList<SmCategory>();
+        cats.add(cat1);cats.add(cat2);cats.add(cat3);
+        cats.add(cat6);cats.add(cat5);cats.add(cat4);
+        return cats;
     }
 
     public SmCategory getById(Long categoryId)
@@ -60,13 +72,39 @@ public class CategoryDAOMock implements CategoryDao
 
     public LinkedList<SmCategory> getAllCategoriesOfUserById(Long userId)
     {
-        LinkedList<SmCategory> result = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
+         Long id = 1L;
+        SmCategory cat1 = new SmCategory(id++, "nameRoot", "pass", "desc1");
+        cat1.add(new SmCategory(id++, "nameIn", "passIn", "descIn"));
+        SmCategory cat2 = new SmCategory(id++, "name1", "pass1", "desc1");
+        SmCategory cat3 = new SmCategory(id++, "nameQ1", "pass1", "desc1");
+        SmCategory cat4 = new SmCategory(id++, "nameQ2", "pass1", "desc1");
+
+        SmCategory cat5 = new SmCategory(id++, "t2y", "pass1", "desc1");
+
+        SmCategory cat6 =
+                new SmCategory(id++, "nameQ3", "pass1", "desc1",
+                new SmCategory[]
+                {
+                    new SmCategory(id++, "qw", "pass1", "desc1"),
+                    new SmCategory(id++, "er", "pass1", "desc1"),
+                    new SmCategory(id++, "ty", "pass1", "desc1")
+                });
+
+        cat4.add(cat5);
+        //cat5.setParent(cat4);
+        cat4.add(cat6); cat3.add(cat4);
+
+        LinkedList<SmCategory> cats = new LinkedList<SmCategory>();
+        cats.add(cat1);cats.add(cat2);cats.add(cat3);
+        cats.add(cat6);cats.add(cat5);cats.add(cat4);
+        return cats;
+        /*LinkedList<SmCategory> result = new LinkedList<SmCategory>();//SmCategory cat = new SmCategory();
 
         for (SmCategory c : categories)
             if (c.getUser().getUserId() == userId)
                 result.add(c);
 
-        return result;
+        return result;*/
     }
 
     public LinkedList<SmCategory> getAllCategoriesOfUser(String userName)

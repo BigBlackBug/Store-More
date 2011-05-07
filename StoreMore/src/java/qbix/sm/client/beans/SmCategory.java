@@ -41,6 +41,7 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
     {
         set("categoryId", id);
         setParent(parentCategory);
+       // parentCategory.add(this);
         set("name", name);
         set("password", password);
         set("description", description);
@@ -143,6 +144,7 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
 
     public void setParentCategory(SmCategory parentCategory)
     {
+        set("parentCategory",parentCategory);
         setParent((TreeModel) parentCategory);
     }
 
