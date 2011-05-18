@@ -29,7 +29,7 @@ public class CategoryDAOMock implements CategoryDao
     {
       
       Long id = 1L;
-        SmCategory cat1 = new SmCategory(id++, "nameRoot", "pass", "desc1");
+        SmCategory cat1 = new SmCategory(id++, "nameRoot", null, "desc1");
         cat1.add(new SmCategory(id++, "nameIn", "passIn", "descIn"));
         SmCategory cat2 = new SmCategory(id++, "name11111", "pass1", "desc1");
         SmCategory cat3 = new SmCategory(id++, "nameQ1", "pass1", "desc1");
@@ -58,7 +58,7 @@ public class CategoryDAOMock implements CategoryDao
 
     public SmCategory getById(Long categoryId)
     {
-        SmCategory cat = new SmCategory();
+        /*SmCategory cat = new SmCategory();
 
         for (SmCategory c : categories)
             if (c.getCategoryId() == categoryId)
@@ -66,7 +66,10 @@ public class CategoryDAOMock implements CategoryDao
                 cat = c;
                 break;
             }
-        return cat;
+        return cat;*/ 
+        SmCategory cat1 = new SmCategory(1L, "nameRoot", "qwe", "desc1");
+        return cat1;
+        
 
     }
 

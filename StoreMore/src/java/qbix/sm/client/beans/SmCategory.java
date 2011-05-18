@@ -41,7 +41,7 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
     {
         set("categoryId", id);
         setParent(parentCategory);
-       // parentCategory.add(this);
+        // parentCategory.add(this);
         set("name", name);
         set("password", password);
         set("description", description);
@@ -54,6 +54,12 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
         for (int i = 0; i < children.length; i++)
             add(children[i]);
     }
+
+//    public boolean hasPassword()
+//    {
+//        return get("password") != null || !((String) get("password")).equals("");
+//    }
+
     public Long getCategoryId()
     {
         return (Long) get("categoryId");
@@ -144,7 +150,7 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
 
     public void setParentCategory(SmCategory parentCategory)
     {
-        set("parentCategory",parentCategory);
+        set("parentCategory", parentCategory);
         setParent((TreeModel) parentCategory);
     }
 

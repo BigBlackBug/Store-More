@@ -1,44 +1,31 @@
 package qbix.sm.client.presenters;
 
-import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.data.BaseListLoader;
-import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.BeanModel;
-import com.extjs.gxt.ui.client.data.BeanModelFactory;
-import com.extjs.gxt.ui.client.data.BeanModelLookup;
-import com.extjs.gxt.ui.client.data.BeanModelReader;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoader;
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreePanelEvent;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.Popup;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.event.shared.EventBus;
+
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
@@ -51,151 +38,106 @@ import qbix.sm.client.services.FCServiceAsync;
  */
 public class AccountOwnerPagePresenter implements Presenter
 {
-    // RpcProxy<LinkedList<SmFile>> fileProxy;
-    TreeStore<ModelData> treeStore = new TreeStore<ModelData>();
-    SmCategory root = new SmCategory();
-    ListStore<BeanModel> fileStore = new ListStore<BeanModel>();
-    BeanModelReader reader = new BeanModelReader();
-    Grid<BeanModel> grid;
-    TreePanel<ModelData> treePanel;
-    ColumnModel cm;
-    //ListField<BeanModel> catList;
-    User pageOwner;
-    FCServiceAsync fcService;
-    // ListLoader<ListLoadResult<BeanModel>> loader;
+    public interface Display
+    {
+        TreePanel<ModelData> getTreePanel();
+
+        void setTreeData(SmCategory root);
+
+        void setTableData(LinkedList<SmFile> files);
+
+        Widget asWidget();
+    }
+    private Popup popup = null;
+    private Map<Long, String> passwords = new HashMap<Long, String>();
+    private User pageOwner;
+    //injected
+    private FCServiceAsync fcService;
+    //injected
+    private EventBus eventBus;
+    //injected
+    private Display display;
 
     @Inject
-    public AccountOwnerPagePresenter(FCServiceAsync fcService)
+    public AccountOwnerPagePresenter(FCServiceAsync fcService, EventBus eventBus, Display display)
     {
         this.fcService = fcService;
+        this.display = display;
+        this.eventBus = eventBus;
 
 
     }
 
-    public void go(final HasWidgets container)
+    private void bind()
     {
 
-        container.clear();
-        container.add(new Label(pageOwner.getName() + "'s acc OWNER presenter"));
-
-        //Каты
-        /////////////////////////////////////////////////////
-
-
-        fcService.getAllCategories(new AsyncCallback<LinkedList<SmCategory>>()
+        display.getTreePanel().addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>()
         {
-            @Override
-            public void onFailure(Throwable caught)
+            public void handleEvent(final TreePanelEvent<ModelData> be)
             {
-                Window.alert("error");
-            }
-
-            @Override
-            public void onSuccess(LinkedList<SmCategory> result)
-            {
-                if (root.getChildCount() != 0)
-                    root.removeAll();
-                for (SmCategory cat : result)
-                    if (cat.getParent() == null)
-                        root.add(cat);
-                if (treeStore.getChildCount() != 0)
-                    treeStore.removeAll();
-                treeStore.add(root.getChildren(), true);
-            }
-        });
-
-        treeStore.add(root.getChildren(), true);
-
-        treePanel = new TreePanel<ModelData>(treeStore);
-       // treePanel.expandAll();
-        treePanel.setDisplayProperty("name");
-        treePanel.setWidth(150);
-        treePanel.setAutoExpand(true);
+                if (popup != null)
+                {
+                    popup.hide();
+                    popup = null;
+                }
 
 
-        treePanel.getStyle().setLeafIcon(treePanel.getStyle().getNodeCloseIcon());
-
-        treePanel.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>()
-        {
-            public void handleEvent(TreePanelEvent<ModelData> be)
-            {
-                final BeanModelFactory beanModelFactory = BeanModelLookup.get().getFactory(SmFile.class);
                 final Long catId = ((Long) be.getItem().get("categoryId"));
 
-                fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
-                {
-                    @Override
-                    public void handleFailure(Throwable caugh)
+                //there should be a remote procedure call here
+                if (catId != 1)//doesnt have pass
+                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
                     {
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
+                        @Override
+                        public void handleFailure(Throwable caugh)
+                        {
+                            throw new UnsupportedOperationException("Not supported yet.");
+                        }
 
-                    @Override
-                    public void handleSuccess(LinkedList<SmFile> result)
+                        @Override
+                        public void handleSuccess(LinkedList<SmFile> result)
+                        {
+                            display.setTableData(result);
+
+                        }
+                    });
+                else//has pass
+                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
                     {
-                        fileStore.removeAll();
-                        //fileStore.
-                        fileStore.add(beanModelFactory.createModel(result));
-                    }
-                });
-            }
+                        @Override
+                        public void handleFailure(Throwable caugh)
+                        {
+                            throw new UnsupportedOperationException("Not supported yet.");
+                        }
 
-            ;
-        });
-        container.add(treePanel);
+                        @Override
+                        public void handleSuccess(LinkedList<SmFile> result)
+                        {
+                            if (passwords.containsKey(catId))
+                            {
+                                display.setTableData(result);
+                                return;
+                            }
+                            display.setTableData(null);
+                            initPopup(catId, "pass", result);
+                            popup.showAt(be.getClientX(), be.getClientY());
 
-
-        //Табла
-        List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-
-        ColumnConfig column = new ColumnConfig();
-        column.setId("realName");
-        column.setHeader("Name");
-        column.setWidth(200);
-        column.setRenderer(new GridCellRenderer()
-        {
-            public Object render(ModelData model, String property, ColumnData config,
-                    int rowIndex, int colIndex, ListStore store, Grid grid)
-            {
-                String realName = (String) model.get(property);
-                String pathName = (String) model.get("pathName");
-                Anchor questionNumberAnchor = new Anchor();
-                questionNumberAnchor.setHref("/StoreMore/download?fileName=" + pathName);
-                questionNumberAnchor.setText(realName);
-                return questionNumberAnchor;
+                        }
+                    });
 
             }
         });
-        configs.add(column);
+    }
 
-        column = new ColumnConfig("size", "size", 100);
-        column.setAlignment(HorizontalAlignment.LEFT);
-        configs.add(column);
+    public void go(final HasWidgets container)
+    {
+        //initPopup();
+        bind();
+        setDataToTree();
+        container.clear();
+        container.add(display.asWidget());
+        container.add(new Label(pageOwner.getName() + "'s acc OWNER presenter"));
 
-        column = new ColumnConfig("uploadDate", "uploading date", 100);
-
-        column.setDateTimeFormat(DateTimeFormat.getFormat("dd MMMM yyyy H:mm"));
-        column.setAlignment(HorizontalAlignment.LEFT);
-
-        column.setWidth(300);
-        configs.add(column);
-
-
-        cm = new ColumnModel(configs);
-        grid = new Grid<BeanModel>(fileStore, cm);
-        grid.setStyleAttribute("borderTop", "none");
-        //grid.setAutoExpandColumn("name");
-        grid.setBorders(true);
-        grid.setStripeRows(true);
-
-        ContentPanel cp = new ContentPanel();
-        cp.setBodyBorder(false);
-        cp.setHeading("Employee List");
-        cp.setButtonAlign(HorizontalAlignment.CENTER);
-        cp.setLayout(new FitLayout());
-        cp.setSize(700, 300);
-        cp.add(grid);
-        container.add(cp);
 
 
     }
@@ -203,5 +145,76 @@ public class AccountOwnerPagePresenter implements Presenter
     public void setOwner(User userInSession)
     {
         pageOwner = userInSession;
+    }
+
+    private void setDataToTree()
+    {
+
+        fcService.getAllCategories(new AsyncCallback<LinkedList<SmCategory>>()
+        {
+            @Override
+            public void onFailure(Throwable caught)
+            {
+            }
+
+            @Override
+            public void onSuccess(LinkedList<SmCategory> result)
+            {
+                SmCategory root = new SmCategory();
+                if (root.getChildCount() != 0)
+                    root.removeAll();
+                for (SmCategory cat : result)
+                    if (cat.getParent() == null)
+                        root.add(cat);
+
+                display.setTreeData(root);
+            }
+        });
+    }
+
+    private void initPopup(final Long catID, final String pass, final LinkedList<SmFile> files)
+    {
+
+        popup = new Popup();
+
+        popup.setSize(300, 55);
+        popup.setAnimate(true);
+        //  popup.setShadow(true);
+        //popup.setBorders(true);
+        popup.setAutoHide(false);
+        popup.setConstrainViewport(true);
+
+        final TextField<String> txtField = new TextField<String>();
+        Text textInf = new Text("pass");
+
+        Button btn = new Button("setPass", new SelectionListener<ButtonEvent>()
+        {
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                if (pass.equals(txtField.getValue()))
+                {
+                    display.setTableData(files);
+                    passwords.put(catID, pass);
+                    popup.hide();
+                }
+            }
+        });
+
+
+
+        final BorderLayout lay = new BorderLayout();
+        popup.setLayout(lay);
+        final BorderLayoutData nData = new BorderLayoutData(LayoutRegion.NORTH, 20);
+        nData.setMargins(new Margins(2));
+        popup.add(textInf, nData);
+        final BorderLayoutData cData = new BorderLayoutData(LayoutRegion.CENTER);
+        nData.setMargins(new Margins(2));
+        popup.add(txtField, cData);
+        final BorderLayoutData eData = new BorderLayoutData(LayoutRegion.EAST, 50);
+        nData.setMargins(new Margins(2));
+        popup.add(btn, eData);
+
+
     }
 }
