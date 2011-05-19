@@ -24,8 +24,11 @@ public class FileDAOMock implements FileDao
 
     public LinkedList<SmFile> getAll()
     {
-
-        return files;
+        return  new LinkedList<SmFile>();
+//        LinkedList<SmFile> q = new LinkedList<SmFile>();
+//        q.add(new SmFile(8L, null, "R", "P", 7L, null));
+//        return q;//
+        // return files;
     }
 
     public LinkedList<SmFile> getAllFilesOfUser(String userName)
@@ -71,22 +74,21 @@ public class FileDAOMock implements FileDao
 
     public LinkedList<SmFile> getAllFilesFromCategory(Long categoryId)
     {
-        if (categoryId == 1)
+        if (categoryId %2==0)
         {
             LinkedList<SmFile> q = new LinkedList<SmFile>();
 
             q.add(new SmFile(1L, null, "realname", "C://123.exe", 123456L, Calendar.getInstance().getTime()));
-             q.add(new SmFile(1L, null, "realname2", "C://123.exe", 123456L, Calendar.getInstance().getTime()));
+            q.add(new SmFile(1L, null, "realname2", "C://123.exe", 123456L, Calendar.getInstance().getTime()));
             return q;
-        }
-        else 
+        } else
         {
             LinkedList<SmFile> q = new LinkedList<SmFile>();
 
             q.add(new SmFile(1L, null, "realnameQ", "C://345.exe", 123456L, Calendar.getInstance().getTime()));
-             q.add(new SmFile(1L, null, "realnameQQ", "C://345.exe", 123456L, Calendar.getInstance().getTime()));
-              q.add(new SmFile(1L, null, "realnameQQQ", "C://345.exe", 123456L, Calendar.getInstance().getTime()));
-              return q;
+            q.add(new SmFile(1L, null, "realnameQQ", "C://345.exe", 123456L, Calendar.getInstance().getTime()));
+            q.add(new SmFile(1L, null, "realnameQQQ", "C://345.exe", 123456L, Calendar.getInstance().getTime()));
+            return q;
         }
         /*SmCategory cat = new SmCategory();
 
@@ -114,7 +116,8 @@ public class FileDAOMock implements FileDao
                 files.remove(f);
     }
 
-    public void delete(SmFile fileToDelete) {
+    public void delete(SmFile fileToDelete)
+    {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

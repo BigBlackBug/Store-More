@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -84,46 +85,62 @@ public class AccountOwnerPagePresenter implements Presenter
 
                 final Long catId = ((Long) be.getItem().get("categoryId"));
 
-                //there should be a remote procedure call here
-                if (catId != 1)//doesnt have pass
-                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                fcService.getCategoryById(catId, new AbstractAsyncCallBack<SmCategory>()
+                {
+                    @Override
+                    public void handleFailure(Throwable caught)
                     {
-                        @Override
-                        public void handleFailure(Throwable caugh)
-                        {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                        }
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
 
-                        @Override
-                        public void handleSuccess(LinkedList<SmFile> result)
-                        {
-                            display.setTableData(result);
-
-                        }
-                    });
-                else//has pass
-                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                    @Override
+                    public void handleSuccess(final SmCategory category)
                     {
-                        @Override
-                        public void handleFailure(Throwable caugh)
-                        {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                        }
-
-                        @Override
-                        public void handleSuccess(LinkedList<SmFile> result)
-                        {
-                            if (passwords.containsKey(catId))
+                     
+                        if (category.hasPassword())
+                            fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
                             {
-                                display.setTableData(result);
-                                return;
-                            }
-                            display.setTableData(null);
-                            initPopup(catId, "pass", result);
-                            popup.showAt(be.getClientX(), be.getClientY());
+                                @Override
+                                public void handleFailure(Throwable caugh)
+                                {
+                                    throw new UnsupportedOperationException("Not supported yet.");
+                                }
 
-                        }
-                    });
+                                @Override
+                                public void handleSuccess(LinkedList<SmFile> files)
+                                {
+                                    if (passwords.containsKey(catId))
+                                    {
+                                        display.setTableData(files);
+                                        return;
+                                    }
+                                    display.setTableData(null);
+                                    initPopup(category, files);
+                                    popup.showAt(be.getClientX(), be.getClientY());
+
+                                }
+                            });
+                        else
+                            fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                            {
+                                @Override
+                                public void handleFailure(Throwable caugh)
+                                {
+                                    throw new UnsupportedOperationException("Not supported yet.");
+                                }
+
+                                @Override
+                                public void handleSuccess(LinkedList<SmFile> result)
+                                {
+                                    display.setTableData(result);
+
+                                }
+                            });
+
+
+                    }
+                });
+              
 
             }
         });
@@ -172,7 +189,7 @@ public class AccountOwnerPagePresenter implements Presenter
         });
     }
 
-    private void initPopup(final Long catID, final String pass, final LinkedList<SmFile> files)
+    private void initPopup(final SmCategory category, final LinkedList<SmFile> files)
     {
 
         popup = new Popup();
@@ -192,10 +209,10 @@ public class AccountOwnerPagePresenter implements Presenter
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                if (pass.equals(txtField.getValue()))
+                if (category.getPassword().equals(txtField.getValue()))
                 {
                     display.setTableData(files);
-                    passwords.put(catID, pass);
+                    passwords.put(category.getCategoryId(), category.getPassword());
                     popup.hide();
                 }
             }

@@ -55,10 +55,10 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
             add(children[i]);
     }
 
-//    public boolean hasPassword()
-//    {
-//        return get("password") != null || !((String) get("password")).equals("");
-//    }
+    public boolean hasPassword()
+    {
+        return get("password") != null || !((String) get("password")).equals("");
+    }
 
     public Long getCategoryId()
     {
