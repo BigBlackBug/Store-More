@@ -78,7 +78,7 @@
     <servlet-mapping>
         <servlet-name>fileUploadServlet</servlet-name>
         <url-pattern>*.fileUpload</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> 
 
  <!-- max size of the upload request 2GB-->
     <context-param>
