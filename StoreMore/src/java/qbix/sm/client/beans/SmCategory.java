@@ -21,7 +21,10 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
     {
         set("categoryId", id);
         set("name", name);
-        set("password", password);
+        if (password == null)
+            set("password", "");
+        else
+            set("password", password);
         set("description", description);
 
     }
@@ -57,7 +60,7 @@ public class SmCategory extends BaseTreeModel implements IsSerializable
 
     public boolean hasPassword()
     {
-        return get("password") != null || !((String) get("password")).equals("");
+        return !((String) get("password")).equals("");
     }
 
     public Long getCategoryId()
