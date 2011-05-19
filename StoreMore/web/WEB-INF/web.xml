@@ -92,13 +92,11 @@
     </context-param>
  <!-- /for UPLOAD -->
 
-<<<<<<< HEAD
-    
-=======
+
 
         <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/ErrorPage.html</location>
     </error-page>
->>>>>>> dev_iliax
+
 </web-app>

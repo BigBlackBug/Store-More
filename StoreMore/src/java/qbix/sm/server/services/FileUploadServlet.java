@@ -49,12 +49,16 @@ public class FileUploadServlet extends UploadAction {
                 File file=new File(".");
                 
 		for (FileItem item : sessionFiles) {
-			if (!item.isFormField()) {
+			//if (!item.isFormField()) {
+
 				try {
 //                                    file = File.createTempFile("receivedFile", ".tmp",
 //                                        new File(file.getCanonicalPath()));
 //					 item.write(file);
-                                    file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getName());
+                                    if(!(item.getFieldName()!=null && item.getFieldName()!=""))
+                                        file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getName());
+                                    else
+                                        file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getFieldName()+item.getName());
                                   //  File tempFile=File.createTempFile("receivedFile_", "", file);
 
                                     item.write(file);
@@ -67,7 +71,7 @@ public class FileUploadServlet extends UploadAction {
 				} catch (Exception e) {
 					throw new UploadActionException(e.getMessage());
 				}
-			}
+			//}
                         getSessionFileItems(request);
 		}
 

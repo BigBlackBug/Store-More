@@ -181,7 +181,7 @@ public class AccountOwnerPagePresenter implements Presenter
         popup.setAnimate(true);
         //  popup.setShadow(true);
         //popup.setBorders(true);
-        popup.setAutoHide(false);
+        //popup.setAutoHide(false);
         popup.setConstrainViewport(true);
 
         final TextField<String> txtField = new TextField<String>();
