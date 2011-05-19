@@ -12,7 +12,8 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import qbix.sm.client.beans.User;
-import qbix.sm.client.events.AbstractAsyncCallback;
+import qbix.sm.client.events.AbstractAsyncCallBack;
+import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
 
 import qbix.sm.client.services.SessionService;
@@ -64,12 +65,12 @@ public class HeaderPanel extends HorizontalPanel{
 
         uploadForm.add(uploaderPanel);
         uploadForm.setCollapsible(true);
+        uploadForm.setTitleCollapse(true);
         uploadForm.setHeading("UploadForm");
-        //uploadForm.setSize("300", "300");
         uploadForm.setSize(250, 250);
         add(uploadForm);
 
-        sessionService.getUserFromSession(new AbstractAsyncCallback<User>() {
+        sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
             @Override
             public void handleFailure(Throwable caugh){}
             @Override
@@ -92,14 +93,14 @@ public class HeaderPanel extends HorizontalPanel{
         logInButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallback<User>() {
+                userService.getByName(userNameField.getValue().trim(), new AbstractAsyncCallBack<User>() {
                     @Override
                     public void handleFailure(Throwable caugh) {}
                     @Override
                     public void handleSuccess(final User result) {
                         if(result!=null)
                             if(result.getPassword().equals(userPasswordField.getValue())==true){
-                                sessionService.addUserToSession(result, new AbstractAsyncCallback<Void>() {
+                                sessionService.addUserToSession(result, new AbstractAsyncCallBack<Void>() {
                                     @Override
                                     public void handleFailure(Throwable caugh) {}
                                     @Override
@@ -136,7 +137,7 @@ public class HeaderPanel extends HorizontalPanel{
         userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(ButtonEvent ce) {
-                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallback<User>() {
+                userService.getByName(userSearchField.getValue().trim(), new AbstractAsyncCallBack<User>() {
                     @Override
                     public void handleFailure(Throwable caugh) {}
                     @Override
@@ -168,12 +169,13 @@ public class HeaderPanel extends HorizontalPanel{
         logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(ButtonEvent ce){
-                sessionService.invalidate(new AbstractAsyncCallback<Void>(){
+                sessionService.invalidate(new AbstractAsyncCallBack<Void>(){
                     @Override
                     public void handleFailure(Throwable caugh){}
                     @Override
                     public void handleSuccess(Void result) {
                        /// goToAccountPage(currentUser);
+                        ///uploaderPanel.cancel();
                         History.newItem("main");
                         setGuestMode();
                     }
@@ -190,8 +192,10 @@ public class HeaderPanel extends HorizontalPanel{
     }
 
     public void setGuestMode(){
+        if(!uploaderPanel.isActive())
+            uploadForm.setVisible(false);
+        uploadForm.collapse();
         currentUser = null;
-        uploadForm.setVisible(false);
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
         logInForm.setVisible(true);

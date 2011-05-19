@@ -113,4 +113,8 @@ public class FileDAOMock implements FileDao
             if (f.getFileId() == fileId)
                 files.remove(f);
     }
+
+    public void delete(SmFile fileToDelete) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

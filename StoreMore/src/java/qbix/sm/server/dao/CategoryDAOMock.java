@@ -143,4 +143,8 @@ public class CategoryDAOMock implements CategoryDao
     {
         categories.remove(getAllCategoriesOfUser(userName));
     }
+
+    public void delete(SmCategory categoryToDelete) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

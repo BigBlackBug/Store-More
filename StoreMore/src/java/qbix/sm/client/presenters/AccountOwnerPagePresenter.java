@@ -29,7 +29,7 @@ import java.util.Map;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
-import qbix.sm.client.events.AbstractAsyncCallback;
+import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.services.FCServiceAsync;
 
 /**
@@ -86,7 +86,7 @@ public class AccountOwnerPagePresenter implements Presenter
 
                 //there should be a remote procedure call here
                 if (catId != 1)//doesnt have pass
-                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
+                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
                     {
                         @Override
                         public void handleFailure(Throwable caugh)
@@ -102,7 +102,7 @@ public class AccountOwnerPagePresenter implements Presenter
                         }
                     });
                 else//has pass
-                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallback<LinkedList<SmFile>>()
+                    fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
                     {
                         @Override
                         public void handleFailure(Throwable caugh)

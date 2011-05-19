@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.LinkedList;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
-import qbix.sm.client.events.AbstractAsyncCallback;
+import qbix.sm.client.events.AbstractAsyncCallBack;
 
 /**
  *

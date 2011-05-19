@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import qbix.sm.client.beans.SmFile;
 
 import qbix.sm.client.beans.User;
-import qbix.sm.client.events.AbstractAsyncCallback;
+import qbix.sm.client.events.AbstractAsyncCallBack;
 import qbix.sm.client.events.ShowAccoutPageEvent;
 import qbix.sm.client.presenters.AccountOwnerPagePresenter;
 import qbix.sm.client.presenters.AccountPagePresenter;
@@ -85,9 +85,12 @@ public class MainController implements ValueChangeHandler<String>, Presenter{
                 History.newItem("main");
                 return;
             }
-            
+            if (targetPageOwner!=null){
+                postOnValueChange(event);
+                return;
+            }
 
-            userService.getByName(token, new AbstractAsyncCallback<User>(){
+            userService.getByName(token, new AbstractAsyncCallBack<User>(){
                 @Override
                 public void handleFailure(Throwable caugh){}
                 @Override
@@ -107,7 +110,7 @@ public class MainController implements ValueChangeHandler<String>, Presenter{
         final String token = event.getValue();
 
         if (token != null)
-            sessionService.getUserFromSession(new AbstractAsyncCallback<User>(){
+            sessionService.getUserFromSession(new AbstractAsyncCallBack<User>(){
                 @Override
                 public void handleFailure(Throwable caugh){
                     //session access failed presenter
