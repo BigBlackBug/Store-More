@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
     
-    protected String FAILTURE_MESSAGE="RPC Callback Failture LOG";
+    protected String FAILURE_MESSAGE="RPC Callback Failture LOG";
 
     protected String SUCCESS_MESSAGE="RPC Callback SUCCESS LOG";
 
@@ -22,7 +22,7 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
 
     public AbstractAsyncCallBack(String successLogMessage, String failtureLogMessage) {
         SUCCESS_MESSAGE=successLogMessage;
-        FAILTURE_MESSAGE=failtureLogMessage;
+        FAILURE_MESSAGE=failtureLogMessage;
     }
 
     //гостовые методы
@@ -39,7 +39,7 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
 
     //логирование
     protected void logFailture(Throwable caught){
-        GWT.log(FAILTURE_MESSAGE, caught);
+        GWT.log(FAILURE_MESSAGE, caught);
         //log.severe(FAILTURE_MESSAGE);
     }
 
@@ -50,7 +50,7 @@ public abstract class  AbstractAsyncCallBack<T> implements  AsyncCallback<T> {
     //
 
     public void setOnFailtureMessage(String message){
-        FAILTURE_MESSAGE=message;
+        FAILURE_MESSAGE=message;
     }
 
     public void setOnSuccessMessage(String message){
