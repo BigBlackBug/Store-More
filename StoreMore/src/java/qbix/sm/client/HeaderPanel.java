@@ -11,13 +11,9 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
-import java.util.LinkedList;
-import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
 import qbix.sm.client.events.AbstractAsyncCallback;
 import qbix.sm.client.events.ShowAccoutPageEvent;
-import qbix.sm.client.services.FCService;
-import qbix.sm.client.services.FCServiceAsync;
 
 import qbix.sm.client.services.SessionService;
 import qbix.sm.client.services.SessionServiceAsync;

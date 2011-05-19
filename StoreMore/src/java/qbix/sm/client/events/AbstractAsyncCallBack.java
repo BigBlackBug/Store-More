@@ -14,14 +14,10 @@ package qbix.sm.client.events;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-/**
- *
- * @author iliax
- */
 
 public abstract class  AbstractAsyncCallback<T> implements  AsyncCallback<T> {
 
-    protected String FAILURE_MESSAGE="RPC Callback Failture LOG";
+    protected String FAILURE_MESSAGE="RPC Callback Failure LOG";
 
     protected String SUCCESS_MESSAGE="RPC Callback SUCCESS LOG";
 
@@ -51,7 +47,7 @@ public abstract class  AbstractAsyncCallback<T> implements  AsyncCallback<T> {
     //логирование
     protected void logFailure(Throwable caught){
         GWT.log(FAILURE_MESSAGE, caught);
-        //log.severe(FAILTURE_MESSAGE);
+        //log.severe(FAILURE_MESSAGE);
     }
 
     protected void logSuccess(){
