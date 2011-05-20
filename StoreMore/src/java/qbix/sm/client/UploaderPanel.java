@@ -94,7 +94,7 @@ public class UploaderPanel extends LayoutContainer {
                             Window.alert("Uploader Status: \n" + uploader.getStatus());
                         isActive=false;
                     }
-
+                    
             });
 
             //uploaderPanel.add(uploader);
