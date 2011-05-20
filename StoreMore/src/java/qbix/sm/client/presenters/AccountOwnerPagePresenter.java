@@ -1,36 +1,30 @@
 package qbix.sm.client.presenters;
 
-import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelFactory;
+import com.extjs.gxt.ui.client.data.BeanModelLookup;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.ModelIconProvider;
-import com.extjs.gxt.ui.client.data.TreeModel;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
+
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreePanelEvent;
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.Popup;
-import com.extjs.gxt.ui.client.widget.Text;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Random;
 
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import qbix.sm.client.Icons;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
@@ -47,15 +41,24 @@ public class AccountOwnerPagePresenter implements Presenter
     {
         TreePanel<ModelData> getTreePanel();
 
-        void setTreeData(SmCategory root);
+        Grid<BeanModel> getGrid();
+
+        MenuItem getRemoveFileMenu();
+
+        void setTreeData(LinkedList<SmCategory> cats);
+
+        TreeStore<ModelData> getTreeStore();
+
+        ListStore<BeanModel> getFileStore();
 
         void setTableData(LinkedList<SmFile> files);
 
+        MenuItem getAddCategoryMenu();
+
+        MenuItem getDeleteCategoryMenu();
+
         Widget asWidget();
     }
-   
-    private Popup popup = null;
-    private Map<Long, String> passwords = new HashMap<Long, String>();
     private User pageOwner;
     //injected
     private FCServiceAsync fcService;
@@ -73,20 +76,43 @@ public class AccountOwnerPagePresenter implements Presenter
 
 
     }
+    //TODO Saving new store to the db
 
     private void bind()
     {
+        display.getAddCategoryMenu().addSelectionListener(new SelectionListener<MenuEvent>()
+        {
+            public void componentSelected(MenuEvent ce)
+            {
+                TreePanel tree = display.getTreePanel();
+                final SmCategory selectedCat = (SmCategory) tree.getSelectionModel().getSelectedItem();
 
+                Integer r = Random.nextInt(1500);
+                final SmCategory newCat = new SmCategory(Long.valueOf(r), "name0", null, "qqq");
+
+
+                display.getTreeStore().add(selectedCat, newCat, true);
+                display.getTreePanel().expandAll();
+                //reloading db here
+
+            }
+        });
+
+        display.getDeleteCategoryMenu().addSelectionListener(new SelectionListener<MenuEvent>()
+        {
+            @Override
+            public void componentSelected(MenuEvent ce)
+            {
+                //display.getTreePanel().setAutoWidth(false);
+                final SmCategory selectedCat = (SmCategory) display.getTreePanel().getSelectionModel().getSelectedItem();
+                display.getTreeStore().remove(selectedCat);
+                //reloading db here
+            }
+        });
         display.getTreePanel().addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>()
         {
             public void handleEvent(final TreePanelEvent<ModelData> be)
             {
-                if (popup != null)
-                {
-                    popup.hide();
-                    popup = null;
-                }
-
 
                 final Long catId = ((Long) be.getItem().get("categoryId"));
 
@@ -101,51 +127,27 @@ public class AccountOwnerPagePresenter implements Presenter
                     @Override
                     public void handleSuccess(final SmCategory category)
                     {
-                     
-                        if (category.hasPassword())
-                            fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+
+                        fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                        {
+                            @Override
+                            public void handleFailure(Throwable caugh)
                             {
-                                @Override
-                                public void handleFailure(Throwable caugh)
-                                {
-                                    throw new UnsupportedOperationException("Not supported yet.");
-                                }
+                                throw new UnsupportedOperationException("Not supported yet.");
+                            }
 
-                                @Override
-                                public void handleSuccess(LinkedList<SmFile> files)
-                                {
-                                    if (passwords.containsKey(catId))
-                                    {
-                                        display.setTableData(files);
-                                        return;
-                                    }
-                                    display.setTableData(null);
-                                    initPopup(category, files);
-                                    popup.showAt(be.getClientX(), be.getClientY());
-
-                                }
-                            });
-                        else
-                            fcService.getAllFilesFromCategory(catId, new AbstractAsyncCallBack<LinkedList<SmFile>>()
+                            @Override
+                            public void handleSuccess(LinkedList<SmFile> result)
                             {
-                                @Override
-                                public void handleFailure(Throwable caugh)
-                                {
-                                    throw new UnsupportedOperationException("Not supported yet.");
-                                }
+                                display.setTableData(result);
 
-                                @Override
-                                public void handleSuccess(LinkedList<SmFile> result)
-                                {
-                                    display.setTableData(result);
-
-                                }
-                            });
+                            }
+                        });
 
 
                     }
                 });
-              
+
 
             }
         });
@@ -155,6 +157,7 @@ public class AccountOwnerPagePresenter implements Presenter
     {
         //initPopup();
         bind();
+
         setDataToTree();
         container.clear();
         container.add(display.asWidget());
@@ -172,7 +175,7 @@ public class AccountOwnerPagePresenter implements Presenter
     private void setDataToTree()
     {
 
-        fcService.getAllCategories(new AsyncCallback<LinkedList<SmCategory>>()
+        fcService.getAllCategoriesOfUserById(pageOwner.getUserId(), new AsyncCallback<LinkedList<SmCategory>>()
         {
             @Override
             public void onFailure(Throwable caught)
@@ -182,70 +185,8 @@ public class AccountOwnerPagePresenter implements Presenter
             @Override
             public void onSuccess(LinkedList<SmCategory> result)
             {
-                SmCategory root = new SmCategory();
-                if (root.getChildCount() != 0)
-                    root.removeAll();
-                for (SmCategory cat : result)
-                    if (cat.getParent() == null)
-                        root.add(cat);
-
-                display.getTreePanel().setIconProvider(new ModelIconProvider<ModelData>() {
-			public AbstractImagePrototype getIcon(ModelData model) {
-				if (((SmCategory) model).hasPassword()) {
-					return Icons.ICONS.locked();
-				}
-				return null;
-			}
-		});
-                display.setTreeData(root);
+                display.setTreeData(result);
             }
         });
-    }
-
-    private void initPopup(final SmCategory category, final LinkedList<SmFile> files)
-    {
-
-        popup = new Popup();
-
-        popup.setSize(300, 55);
-        popup.setAnimate(true);
-        //  popup.setShadow(true);
-        //popup.setBorders(true);
-       // popup.setAutoHide(false);
-        popup.setConstrainViewport(true);
-
-        final TextField<String> txtField = new TextField<String>();
-        Text textInf = new Text("pass");
-
-        Button btn = new Button("setPass", new SelectionListener<ButtonEvent>()
-        {
-            @Override
-            public void componentSelected(ButtonEvent ce)
-            {
-                if (category.getPassword().equals(txtField.getValue()))
-                {
-                    display.setTableData(files);
-                    passwords.put(category.getCategoryId(), category.getPassword());
-                    popup.hide();
-                    popup=null;
-                }
-            }
-        });
-
-
-
-        final BorderLayout lay = new BorderLayout();
-        popup.setLayout(lay);
-        final BorderLayoutData nData = new BorderLayoutData(LayoutRegion.NORTH, 20);
-        nData.setMargins(new Margins(2));
-        popup.add(textInf, nData);
-        final BorderLayoutData cData = new BorderLayoutData(LayoutRegion.CENTER);
-        nData.setMargins(new Margins(2));
-        popup.add(txtField, cData);
-        final BorderLayoutData eData = new BorderLayoutData(LayoutRegion.EAST, 50);
-        nData.setMargins(new Margins(2));
-        popup.add(btn, eData);
-
-
     }
 }

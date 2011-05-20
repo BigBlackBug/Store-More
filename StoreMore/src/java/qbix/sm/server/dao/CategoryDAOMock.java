@@ -122,17 +122,17 @@ public class CategoryDAOMock implements CategoryDao
 
     public LinkedList<SmCategory> getAllCategoriesOfUserById(Long userId)
     {
-        Long id = 1L;
-        SmCategory cat1 = new SmCategory(id++, "nameRoot", "pass", "desc1");
-        cat1.add(new SmCategory(id++, "nameIn", null, "descIn"));
-        SmCategory cat2 = new SmCategory(id++, "name1", "pass1", "desc1");
-        SmCategory cat3 = new SmCategory(id++, "nameQ1", "pass1", "desc1");
-        SmCategory cat4 = new SmCategory(id++, "nameQ2", "pass1", "desc1");
+         Long id = 1L;
+        SmCategory cat1 = new SmCategory(id++, "nameRoot", null, "desc1");
+        cat1.add(new SmCategory(id++, "nameIn", "passIn", "descIn"));
+        SmCategory cat2 = new SmCategory(id++, "111", "pass1", "desc1");
+        SmCategory cat3 = new SmCategory(id++, "222", "pass2", "desc1");
+        SmCategory cat4 = new SmCategory(id++, "333", "pass3", "desc1");
 
-        SmCategory cat5 = new SmCategory(id++, "t2y", "pass1", "desc1");
+        SmCategory cat5 = new SmCategory(id++, "444", "pass4", "desc1");
 
         SmCategory cat6 =
-                new SmCategory(id++, "nameQ3", "pass1", "desc1",
+                new SmCategory(id++, "555", "pass5", "desc1",
                 new SmCategory[]
                 {
                     new SmCategory(id++, "qw", "pass1", "desc1"),

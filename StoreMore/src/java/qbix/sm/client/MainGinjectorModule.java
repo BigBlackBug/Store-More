@@ -5,25 +5,27 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 import qbix.sm.client.presenters.AccountOwnerPagePresenter;
+import qbix.sm.client.presenters.AccountPagePresenter;
 import qbix.sm.client.services.FCServiceAsync;
-import qbix.sm.client.services.UserService;
 import qbix.sm.client.services.UserServiceAsync;
 import qbix.sm.client.views.AccountOwnerPageView;
+import qbix.sm.client.views.AccountPageView;
 
 /**
  *
  * @author iliax
  */
-
-public class MainGinjectorModule extends AbstractGinModule{
-
+public class MainGinjectorModule extends AbstractGinModule
+{
     @Override
-    protected void configure() {
+    protected void configure()
+    {
         //base
-            bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class); //синглтон!
-            bind(UserServiceAsync.class).in(Singleton.class);
-            bind(FCServiceAsync.class).in(Singleton.class);
-                 bind(AccountOwnerPagePresenter.Display.class).to(AccountOwnerPageView.class);
+        bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class); //синглтон!
+        bind(UserServiceAsync.class).in(Singleton.class);
+        bind(FCServiceAsync.class).in(Singleton.class);
+        bind(AccountOwnerPagePresenter.Display.class).to(AccountOwnerPageView.class);
+        bind(AccountPagePresenter.Display.class).to(AccountPageView.class);
         //
 
         bindViewsToPresenters();
@@ -32,15 +34,15 @@ public class MainGinjectorModule extends AbstractGinModule{
         bindSmthElse();
     }
 
-    private void bindViewsToPresenters(){
-        
+    private void bindViewsToPresenters()
+    {
     }
 
-    private void bindServicesToPresenters(){
- 
+    private void bindServicesToPresenters()
+    {
     }
 
-    private void bindSmthElse(){
-        
+    private void bindSmthElse()
+    {
     }
 }
