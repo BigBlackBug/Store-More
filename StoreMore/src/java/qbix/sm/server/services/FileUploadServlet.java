@@ -20,7 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import qbix.sm.client.services.FCService;
-import qbix.sm.server.FileSavingConfig;
+import qbix.sm.client.FileSavingConfig;
 
 /**
  *
@@ -33,8 +33,6 @@ public class FileUploadServlet extends UploadAction {
 
         FCService fCService=null;
 
-        FileSavingConfig savingConfig=null;
-
     @Override
     public void init() throws ServletException {
         super.init();
@@ -42,7 +40,6 @@ public class FileUploadServlet extends UploadAction {
         ApplicationContext context = WebApplicationContextUtils.
             getRequiredWebApplicationContext(getServletContext());
         fCService=(FCService) context.getBean("FCService");
-        savingConfig=(FileSavingConfig) context.getBean("fileSavingConfig");
     }
 
 
@@ -53,24 +50,17 @@ public class FileUploadServlet extends UploadAction {
 
                 File file=new File(".");
 
-                if(!savingConfig.isAllowed()){
-                    return "Saving is not allowed now.. Please try later";
-                }
-                
+                            
 		for (FileItem item : sessionFiles) {
 			//if (!item.isFormField()) {
-
 				try {
 //                                    file = File.createTempFile("receivedFile", ".tmp",
 //                                        new File(file.getCanonicalPath()));
 //					 item.write(file);
                                     if(!(item.getFieldName()!=null || item.getFieldName()!=""))
                                         file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getName());
-                                        //file=new File(savingConfig.getRootDirectoryPath()+"/"+item.getName());
                                     else
-                                        //file=new File(savingConfig.getRootDirectoryPath()+item.getFieldName()+"_"+item.getName());
-                                    file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getFieldName()+"_"+savingConfig.getRootDirectoryPath()+"_"+item.getName());
-
+                                        file=new File(file.getCanonicalPath()+"/for_saved_files/"+item.getFieldName()+"_"+item.getName());
                                     item.write(file);
 					 response += " " + file.getPath();
 

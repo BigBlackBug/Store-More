@@ -16,16 +16,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
     <aop:aspectj-autoproxy/>
 
-     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-       <property name="location">
-         <value>WEB-INF/saving.properties</value>
-       </property>
-    </bean>
-
-    <bean name="fileSavingConfig" class="qbix.sm.server.FileSavingConfig">
-        <property name="rootDirectoryPath" value="${directory.path}"/>
-        <property name="allowed" value="${saving.allowed}" />
-    </bean>
 <!-- /PREFERENCES -->
 
 <!-- DAOs -->
