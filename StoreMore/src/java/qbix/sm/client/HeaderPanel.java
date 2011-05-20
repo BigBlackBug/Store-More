@@ -3,6 +3,7 @@ package qbix.sm.client;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.HorizontalPanel;
+import com.extjs.gxt.ui.client.widget.Popup;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -31,6 +32,8 @@ public class HeaderPanel extends HorizontalPanel{
     Button logOffButton = new Button("logOff!");
     User currentUser;
     FormPanel logInForm = new FormPanel();
+    Popup logInPopup=new Popup();
+    Button logInPopupButton=new Button("LogIn!");
     TextField<String> userNameField = new TextField<String>();
     TextField<String> userPasswordField = new TextField<String>();
     Button logInButton = new Button("logIn!");
@@ -41,7 +44,6 @@ public class HeaderPanel extends HorizontalPanel{
 
     private SessionServiceAsync sessionService = GWT.create(SessionService.class);
 
-    FormPanel uploadForm=new FormPanel();
     UploaderPanel uploaderPanel=new UploaderPanel();
 
 
@@ -59,16 +61,12 @@ public class HeaderPanel extends HorizontalPanel{
         add(userSeachButton);
 
         initLogInPanel();
-        add(logInForm);
+        //add(logInForm);
+        add(logInPopupButton);
 
         add(logOffButton);
 
-        uploadForm.add(uploaderPanel);
-        uploadForm.setCollapsible(true);
-        uploadForm.setTitleCollapse(true);
-        uploadForm.setHeading("UploadForm");
-        uploadForm.setSize(250, 250);
-        add(uploadForm);
+        add(uploaderPanel);
 
         sessionService.getUserFromSession(new AbstractAsyncCallBack<User>() {
             @Override
@@ -106,6 +104,7 @@ public class HeaderPanel extends HorizontalPanel{
                                     @Override
                                     public void handleSuccess(Void voidres) {
                                         HeaderPanel.this.setAuthMode(result);
+                                        logInPopup.hide();
                                         eventBus.fireEvent(new ShowAccoutPageEvent(result));
                                     }
                                 });
@@ -119,8 +118,7 @@ public class HeaderPanel extends HorizontalPanel{
                 });
             }
         });
-        logInForm.setCollapsible(true);
-        logInForm.collapse();
+        
         logInForm.setTitleCollapse(true);
         logInForm.setHeading("Log In Form");
         userNameField.setFieldLabel("nick");
@@ -131,6 +129,16 @@ public class HeaderPanel extends HorizontalPanel{
         logInForm.add(userNameField);
         logInForm.add(userPasswordField);
         logInForm.add(logInButton);
+
+        logInPopup.add(logInForm);
+        logInPopup.setAnimate(true);
+
+        logInPopupButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(ButtonEvent ce) {
+                logInPopup.show(logInPopupButton);
+            }
+        });
     }
 
     private void initUserSearch() {
@@ -154,9 +162,8 @@ public class HeaderPanel extends HorizontalPanel{
 
     public void setAuthMode(User user){
         currentUser=user;
-        logInForm.collapse();
-        uploadForm.setVisible(true);
-        uploadForm.collapse();
+        uploaderPanel.setVisible(true);
+        logInPopupButton.setVisible(false);
         userNameButton.setText(user.getName());
         userNameButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
@@ -164,7 +171,7 @@ public class HeaderPanel extends HorizontalPanel{
                 eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
             }
         });
-        logInForm.setVisible(false);
+
         logOffButton.setVisible(true);
         logOffButton.addSelectionListener(new SelectionListener<ButtonEvent>(){
             @Override
@@ -183,23 +190,14 @@ public class HeaderPanel extends HorizontalPanel{
             }
         });
         userNameButton.setEnabled(true);
-//        userSeachButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
-//            @Override
-//            public void componentSelected(ButtonEvent ce) {
-//               eventBus.fireEvent(new ShowAccoutPageEvent(currentUser));
-//            }
-//        });
     }
 
     public void setGuestMode(){
-        if(!uploaderPanel.isActive())
-            uploadForm.setVisible(false);
-        uploadForm.collapse();
+        uploaderPanel.setVisible(false);
         currentUser = null;
         userNameButton.setText("UnAuthorizedUser");
         userNameButton.setEnabled(false);
-        logInForm.setVisible(true);
-        logInForm.collapse();
+        logInPopupButton.setVisible(true);
         logOffButton.setVisible(false);
         userNameField.setValue("");
         userPasswordField.setValue("");
