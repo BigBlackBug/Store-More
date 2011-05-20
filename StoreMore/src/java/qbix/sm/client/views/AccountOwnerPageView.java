@@ -5,7 +5,6 @@
 package qbix.sm.client.views;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.BeanModelFactory;
 import com.extjs.gxt.ui.client.data.BeanModelLookup;
@@ -19,16 +18,17 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.extjs.gxt.ui.client.widget.layout.HBoxLayout;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import qbix.sm.client.Icons;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.presenters.AccountOwnerPagePresenter;
@@ -44,10 +44,12 @@ public class AccountOwnerPageView extends Composite implements AccountOwnerPageP
     Grid<BeanModel> grid;
     TreePanel<ModelData> treePanel;
     ColumnModel columnModel;
+    //public static final Icons ICONS = GWT.create(Icons.class);
 
     public AccountOwnerPageView()
     {
         ContentPanel contents = new ContentPanel();//new RowLayout(Orientation.HORIZONTAL));
+        contents.setLayout(new HBoxLayout());
         initWidget(contents);
         treePanel = new TreePanel<ModelData>(treeStore);
         // treePanel.expandAll();
@@ -103,11 +105,12 @@ public class AccountOwnerPageView extends Composite implements AccountOwnerPageP
         grid.setStyleAttribute("borderTop", "none");
         //grid.setAutoExpandColumn("name");
         grid.setBorders(true);
+
         grid.setStripeRows(true);
 
         ContentPanel gridContentPanel = new ContentPanel();
         gridContentPanel.setBodyBorder(false);
-        gridContentPanel.setHeading("Employee List");
+        gridContentPanel.setHeading("FILES");
         gridContentPanel.setButtonAlign(HorizontalAlignment.CENTER);
         gridContentPanel.setLayout(new FitLayout());
         gridContentPanel.setSize(700, 300);

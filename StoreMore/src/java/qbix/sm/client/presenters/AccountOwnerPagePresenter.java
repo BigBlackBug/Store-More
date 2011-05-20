@@ -2,6 +2,8 @@ package qbix.sm.client.presenters;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
+import com.extjs.gxt.ui.client.data.TreeModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -15,11 +17,12 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,6 +30,7 @@ import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import qbix.sm.client.Icons;
 import qbix.sm.client.beans.SmCategory;
 import qbix.sm.client.beans.SmFile;
 import qbix.sm.client.beans.User;
@@ -49,6 +53,7 @@ public class AccountOwnerPagePresenter implements Presenter
 
         Widget asWidget();
     }
+   
     private Popup popup = null;
     private Map<Long, String> passwords = new HashMap<Long, String>();
     private User pageOwner;
@@ -184,6 +189,14 @@ public class AccountOwnerPagePresenter implements Presenter
                     if (cat.getParent() == null)
                         root.add(cat);
 
+                display.getTreePanel().setIconProvider(new ModelIconProvider<ModelData>() {
+			public AbstractImagePrototype getIcon(ModelData model) {
+				if (((SmCategory) model).hasPassword()) {
+					return Icons.ICONS.locked();
+				}
+				return null;
+			}
+		});
                 display.setTreeData(root);
             }
         });
@@ -198,7 +211,7 @@ public class AccountOwnerPagePresenter implements Presenter
         popup.setAnimate(true);
         //  popup.setShadow(true);
         //popup.setBorders(true);
-        popup.setAutoHide(false);
+       // popup.setAutoHide(false);
         popup.setConstrainViewport(true);
 
         final TextField<String> txtField = new TextField<String>();
@@ -214,6 +227,7 @@ public class AccountOwnerPagePresenter implements Presenter
                     display.setTableData(files);
                     passwords.put(category.getCategoryId(), category.getPassword());
                     popup.hide();
+                    popup=null;
                 }
             }
         });
